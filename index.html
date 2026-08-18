@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2nd Year BSIT - Java Understanding Quiz</title>
+<title>2nd Year BSIT - Java Understanding Quiz For Last Batch</title>
 <style>
 :root{--sti-blue:#0054a6;--sti-yellow:#ffd200;--dark:#12324a;--light:#f4f8fc}
 *{box-sizing:border-box}
@@ -56,7 +56,7 @@ pre{background:#f5f7f9;padding:12px;overflow:auto;border-left:4px solid var(--st
 <body>
 <header class="header">
 <div class="brand">STI COLLEGE</div>
-<h1>2ND YEAR BSIT – JAVA PROGRAMMING</h1>
+<h1>2nd Year BSIT - Java Understanding Quiz For Last Batch</h1>
 <h2>UNDERSTANDING-TYPE QUIZ</h2>
 <div>Coverage: Designing Methods • Static Methods and Fields • Method Overloading</div>
 </header>
@@ -79,55 +79,432 @@ pre{background:#f5f7f9;padding:12px;overflow:auto;border-left:4px solid var(--st
 </div>
 <div class="section">PART I – MULTIPLE CHOICE (35 ITEMS × 2 POINTS = 70 POINTS)</div>
 <p>Select the letter of the best answer.</p>
-<div class="question"><strong>1. A programmer wants to create a method that receives the number of minutes and does not return any value. Which declaration is most appropriate?</strong><label class="option"><input type="radio" name="q1"> A. public int nap(int minutes)</label><label class="option"><input type="radio" name="q1"> B. public void nap(int minutes)</label><label class="option"><input type="radio" name="q1"> C. public nap(int minutes)</label><label class="option"><input type="radio" name="q1"> D. void public nap(minutes)</label></div>
-<div class="question"><strong>2. Consider: <code>public double computePrice(double price, double discount) { return price - discount; }</code> Which part tells Java what kind of value the method will return?</strong><label class="option"><input type="radio" name="q2"> A. computePrice</label><label class="option"><input type="radio" name="q2"> B. (double price, double discount)</label><label class="option"><input type="radio" name="q2"> C. double</label><label class="option"><input type="radio" name="q2"> D. public</label></div>
-<div class="question"><strong>3. A student writes <code>public void display(int x)</code> but forgets to provide the method body. Which part of the method declaration is missing?</strong><label class="option"><input type="radio" name="q3"> A. Return type</label><label class="option"><input type="radio" name="q3"> B. Parameter list</label><label class="option"><input type="radio" name="q3"> C. Method body</label><label class="option"><input type="radio" name="q3"> D. Access modifier</label></div>
-<div class="question"><strong>4. Which method name best follows the naming convention described in the handout?</strong><label class="option"><input type="radio" name="q4"> A. CalculateTotal()</label><label class="option"><input type="radio" name="q4"> B. calculate_total()</label><label class="option"><input type="radio" name="q4"> C. calculateTotal()</label><label class="option"><input type="radio" name="q4"> D. CALCULATETOTAL()</label></div>
-<div class="question"><strong>5. Consider: <code>public void display(int x, double y) { System.out.println(x + y); }</code> What do <code>x</code> and <code>y</code> represent?</strong><label class="option"><input type="radio" name="q5"> A. Arguments</label><label class="option"><input type="radio" name="q5"> B. Parameters</label><label class="option"><input type="radio" name="q5"> C. Return values</label><label class="option"><input type="radio" name="q5"> D. Access modifiers</label></div>
-<div class="question"><strong>6. If the programmer calls <code>display(10, 5.5);</code> what are <code>10</code> and <code>5.5</code>?</strong><label class="option"><input type="radio" name="q6"> A. Parameters</label><label class="option"><input type="radio" name="q6"> B. Arguments</label><label class="option"><input type="radio" name="q6"> C. Return types</label><label class="option"><input type="radio" name="q6"> D. Method bodies</label></div>
-<div class="question"><strong>7. A method is declared as <code>public void display()</code>. Which statement correctly calls the method?</strong><label class="option"><input type="radio" name="q7"> A. display;</label><label class="option"><input type="radio" name="q7"> B. display();</label><label class="option"><input type="radio" name="q7"> C. void display();</label><label class="option"><input type="radio" name="q7"> D. call display();</label></div>
-<div class="question"><strong>8. A programmer wants a method to be accessible from classes everywhere in the program. Which access modifier should be used?</strong><label class="option"><input type="radio" name="q8"> A. private</label><label class="option"><input type="radio" name="q8"> B. protected</label><label class="option"><input type="radio" name="q8"> C. package-private</label><label class="option"><input type="radio" name="q8"> D. public</label></div>
-<div class="question"><strong>9. A method is declared <code>private</code>. A student tries to call it directly from another class. What is the main problem?</strong><label class="option"><input type="radio" name="q9"> A. Private methods cannot have parameters.</label><label class="option"><input type="radio" name="q9"> B. Private methods cannot return values.</label><label class="option"><input type="radio" name="q9"> C. Private methods are accessible only within their own class.</label><label class="option"><input type="radio" name="q9"> D. Private methods must always be static.</label></div>
-<div class="question"><strong>10. Which statement correctly describes a <code>protected</code> member based on the handout?</strong><label class="option"><input type="radio" name="q10"> A. It can only be accessed inside the same method.</label><label class="option"><input type="radio" name="q10"> B. It can be accessed within its package and by subclasses in another package.</label><label class="option"><input type="radio" name="q10"> C. It can only be accessed by the class that created it.</label><label class="option"><input type="radio" name="q10"> D. It is accessible from every class.</label></div>
-<div class="question"><strong>11. Consider: <code>class Student { static int count = 0; }</code> Three Student objects are created. How many copies of <code>count</code> exist?</strong><label class="option"><input type="radio" name="q11"> A. One</label><label class="option"><input type="radio" name="q11"> B. Two</label><label class="option"><input type="radio" name="q11"> C. Three</label><label class="option"><input type="radio" name="q11"> D. Four</label></div>
-<div class="question"><strong>12. Why would a programmer use a static variable for a student counter?</strong><label class="option"><input type="radio" name="q12"> A. Each object needs a completely separate counter.</label><label class="option"><input type="radio" name="q12"> B. All objects need to share the same counter value.</label><label class="option"><input type="radio" name="q12"> C. Static variables cannot be changed.</label><label class="option"><input type="radio" name="q12"> D. Static variables automatically become constants.</label></div>
-<div class="question"><strong>13. Consider: <code>class Counter { static int count = 0; void increment() { count++; } }</code> If two different objects each call <code>increment()</code> once, what is the value of <code>count</code>?</strong><label class="option"><input type="radio" name="q13"> A. 0</label><label class="option"><input type="radio" name="q13"> B. 1</label><label class="option"><input type="radio" name="q13"> C. 2</label><label class="option"><input type="radio" name="q13"> D. It depends on the object</label></div>
-<div class="question"><strong>14. Why does <code>obj1.increment(); obj2.increment();</code> produce the same shared value when <code>count</code> is static?</strong><label class="option"><input type="radio" name="q14"> A. Each object automatically copies the other's variables.</label><label class="option"><input type="radio" name="q14"> B. Static variables are shared among all instances of the class.</label><label class="option"><input type="radio" name="q14"> C. Java prevents objects from having variables.</label><label class="option"><input type="radio" name="q14"> D. increment() automatically becomes static.</label></div>
-<div class="question"><strong>15. Which statement best describes a static method?</strong><label class="option"><input type="radio" name="q15"> A. It belongs to a specific object.</label><label class="option"><input type="radio" name="q15"> B. It belongs to the class.</label><label class="option"><input type="radio" name="q15"> C. It can only be called from a constructor.</label><label class="option"><input type="radio" name="q15"> D. It must always return an integer.</label></div>
-<div class="question"><strong>16. A programmer creates a utility method that does not need any object-specific information. Which design is most appropriate?</strong><label class="option"><input type="radio" name="q16"> A. Make the method static.</label><label class="option"><input type="radio" name="q16"> B. Make the method private only.</label><label class="option"><input type="radio" name="q16"> C. Make the method abstract only.</label><label class="option"><input type="radio" name="q16"> D. Make the method require an object every time.</label></div>
-<div class="question"><strong>17. Which is the correct way to call the following method? <code>class NumberClass { public static void displayNumber() { System.out.println("Hello"); } }</code></strong><label class="option"><input type="radio" name="q17"> A. NumberClass.displayNumber();</label><label class="option"><input type="radio" name="q17"> B. displayNumber.NumberClass();</label><label class="option"><input type="radio" name="q17"> C. static.displayNumber();</label><label class="option"><input type="radio" name="q17"> D. NumberClass->displayNumber();</label></div>
-<div class="question"><strong>18. Consider: <code>class NumberClass { public static int num = 0; }</code> Which statement correctly changes the shared variable?</strong><label class="option"><input type="radio" name="q18"> A. NumberClass.num = 10;</label><label class="option"><input type="radio" name="q18"> B. NumberClass->num = 10;</label><label class="option"><input type="radio" name="q18"> C. static.num = 10;</label><label class="option"><input type="radio" name="q18"> D. num.NumberClass = 10;</label></div>
-<div class="question"><strong>19. Two objects modify the same static variable: <code>nc1.num = 6; nc2.num = 5;</code> What will <code>NumberClass.num</code> contain afterward?</strong><label class="option"><input type="radio" name="q19"> A. 0</label><label class="option"><input type="radio" name="q19"> B. 5</label><label class="option"><input type="radio" name="q19"> C. 6</label><label class="option"><input type="radio" name="q19"> D. 11</label></div>
-<div class="question"><strong>20. A student says, “A static variable belongs separately to every object.” What is the best correction?</strong><label class="option"><input type="radio" name="q20"> A. Correct; every object gets its own static variable.</label><label class="option"><input type="radio" name="q20"> B. Correct only when the variable is private.</label><label class="option"><input type="radio" name="q20"> C. Incorrect; a static variable has one shared copy for the class.</label><label class="option"><input type="radio" name="q20"> D. Incorrect; static variables cannot be accessed by objects.</label></div>
-<div class="question"><strong>21. Which statement is valid according to the handout?</strong><label class="option"><input type="radio" name="q21"> A. A static method can directly access an instance method.</label><label class="option"><input type="radio" name="q21"> B. A static method can directly access an instance variable.</label><label class="option"><input type="radio" name="q21"> C. A static method can access static members.</label><label class="option"><input type="radio" name="q21"> D. A static method must first create two objects.</label></div>
-<div class="question"><strong>22. Consider: <code>class Test { int num = 10; public static void display() { System.out.println(num); } }</code> Why does this cause a problem?</strong><label class="option"><input type="radio" name="q22"> A. num is an instance variable being accessed from a static context.</label><label class="option"><input type="radio" name="q22"> B. num is an integer.</label><label class="option"><input type="radio" name="q22"> C. display() cannot contain System.out.println().</label><label class="option"><input type="radio" name="q22"> D. Static methods cannot print values.</label></div>
-<div class="question"><strong>23. Which situation is the best example of using a static field?</strong><label class="option"><input type="radio" name="q23"> A. Each student has a different name.</label><label class="option"><input type="radio" name="q23"> B. Each car has a different color.</label><label class="option"><input type="radio" name="q23"> C. All objects need to share a total object count.</label><label class="option"><input type="radio" name="q23"> D. Each employee has a different salary.</label></div>
-<div class="question"><strong>24. Which situation is more appropriate for an instance variable?</strong><label class="option"><input type="radio" name="q24"> A. A counter shared by every object</label><label class="option"><input type="radio" name="q24"> B. A value unique to each student object</label><label class="option"><input type="radio" name="q24"> C. A utility method that does not need object state</label><label class="option"><input type="radio" name="q24"> D. A class-wide constant counter</label></div>
-<div class="question"><strong>25. Which pair demonstrates valid method overloading?</strong><label class="option"><input type="radio" name="q25"> A. draw(int x) / draw(int x)</label><label class="option"><input type="radio" name="q25"> B. draw(int x) / draw(double x)</label><label class="option"><input type="radio" name="q25"> C. draw(int x) / draw(int y)</label><label class="option"><input type="radio" name="q25"> D. draw(int x) / int draw(int x)</label></div>
-<div class="question"><strong>26. Why can these methods coexist: <code>draw(int x)</code> and <code>draw(double x)</code>?</strong><label class="option"><input type="radio" name="q26"> A. They have different method names.</label><label class="option"><input type="radio" name="q26"> B. They have different return types.</label><label class="option"><input type="radio" name="q26"> C. They have different parameter types.</label><label class="option"><input type="radio" name="q26"> D. They have different access modifiers.</label></div>
-<div class="question"><strong>27. Consider: <code>void draw(String s) { } void draw(int i) { } void draw(int i, double f) { }</code> Which call uses the third overloaded method?</strong><label class="option"><input type="radio" name="q27"> A. draw("Circle");</label><label class="option"><input type="radio" name="q27"> B. draw(10);</label><label class="option"><input type="radio" name="q27"> C. draw(10, 5.0);</label><label class="option"><input type="radio" name="q27"> D. draw();</label></div>
-<div class="question"><strong>28. A student attempts: <code>public void display(int x) { } public int display(int x) { }</code> Why is this not valid overloading?</strong><label class="option"><input type="radio" name="q28"> A. The methods have different return types.</label><label class="option"><input type="radio" name="q28"> B. The methods have the same name and parameter types.</label><label class="option"><input type="radio" name="q28"> C. The methods are both public.</label><label class="option"><input type="radio" name="q28"> D. Java does not allow methods named display.</label></div>
-<div class="question"><strong>29. What determines which overloaded method Java should use?</strong><label class="option"><input type="radio" name="q29"> A. Only the return type</label><label class="option"><input type="radio" name="q29"> B. The number and types of arguments</label><label class="option"><input type="radio" name="q29"> C. Only the method's access modifier</label><label class="option"><input type="radio" name="q29"> D. The method's body length</label></div>
-<div class="question"><strong>30. Consider: <code>public static void newNumber(int num) { num = 3; }</code> In main, <code>int num = 1; newNumber(num); System.out.println(num);</code> What is printed?</strong><label class="option"><input type="radio" name="q30"> A. 1</label><label class="option"><input type="radio" name="q30"> B. 2</label><label class="option"><input type="radio" name="q30"> C. 3</label><label class="option"><input type="radio" name="q30"> D. Nothing</label></div>
-<div class="question"><strong>31. Why does the previous program still print <code>1</code>?</strong><label class="option"><input type="radio" name="q31"> A. Java ignores method calls.</label><label class="option"><input type="radio" name="q31"> B. The method receives a copy of the variable's value.</label><label class="option"><input type="radio" name="q31"> C. The method cannot contain assignments.</label><label class="option"><input type="radio" name="q31"> D. Local variables are automatically static.</label></div>
-<div class="question"><strong>32. Which statement correctly distinguishes a parameter from an argument?</strong><label class="option"><input type="radio" name="q32"> A. A parameter is the actual value; an argument is the variable in the declaration.</label><label class="option"><input type="radio" name="q32"> B. A parameter appears in the method declaration; an argument is supplied when calling the method.</label><label class="option"><input type="radio" name="q32"> C. Parameters and arguments are exactly the same concept.</label><label class="option"><input type="radio" name="q32"> D. Parameters are always static while arguments are always instance variables.</label></div>
-<div class="question"><strong>33. What does autoboxing allow Java to do?</strong><label class="option"><input type="radio" name="q33"> A. Automatically convert a primitive into its corresponding wrapper object when needed.</label><label class="option"><input type="radio" name="q33"> B. Automatically convert every object into a String.</label><label class="option"><input type="radio" name="q33"> C. Automatically convert every method into a static method.</label><label class="option"><input type="radio" name="q33"> D. Automatically change a method's return type.</label></div>
-<div class="question"><strong>34. Consider: <code>public void draw(Integer i) { System.out.print("Integer"); }</code> followed by <code>draw(10);</code>. If there is no <code>draw(int)</code> version, what can Java do?</strong><label class="option"><input type="radio" name="q34"> A. Reject the call because 10 cannot be used.</label><label class="option"><input type="radio" name="q34"> B. Convert the primitive int to Integer through autoboxing.</label><label class="option"><input type="radio" name="q34"> C. Convert Integer into double.</label><label class="option"><input type="radio" name="q34"> D. Convert the method into static form.</label></div>
-<div class="question"><strong>35. Consider overloaded methods <code>draw(Integer i)</code> and <code>draw(int i)</code>, followed by <code>draw(10);</code>. Which output should be expected?</strong><label class="option"><input type="radio" name="q35"> A. Integer</label><label class="option"><input type="radio" name="q35"> B. int</label><label class="option"><input type="radio" name="q35"> C. 10</label><label class="option"><input type="radio" name="q35"> D. No output</label></div>
-<div class="section">PART II – ESSAY (6 ITEMS × 5 POINTS = 30 POINTS)</div><p>Answer each question clearly and concisely. Show your understanding of the concept.</p><div class="essay"><strong>36. Explain the difference between a parameter and an argument. Give a simple Java example showing both.</strong><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div><div class="essay"><strong>37. A class is designed to keep track of how many objects have been created. Explain why a static variable would be appropriate for this purpose. Describe what would happen if the variable were instead an instance variable.</strong><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div><div class="essay"><strong>38. Explain the difference between a static method and an instance method. Give one practical situation where using a static method would be more appropriate.</strong><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div><div class="essay"><strong>39. A student says: “I can create two methods with the same name as long as they have different return types.” Do you agree or disagree? Explain your answer using the concept of method overloading and provide a Java example.</strong><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div><div class="essay"><strong>40. Consider the following code:<pre>public static void changeValue(int num) {
-    num = 100;
-}
-
-public static void main(String[] args) {
-    int value = 50;
-    changeValue(value);
-    System.out.println(value);
-}</pre> Explain why the output remains 50 even though the method changes num to 100. Relate your explanation to Java’s pass-by-value behavior.</strong><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div><div class="essay"><strong>41. Explain autoboxing in Java in your own words. Why can the following call work even though the method expects an Integer?<pre>public void display(Integer number) {
-    System.out.println(number);
-}
-
-display(10);</pre></strong><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+<div id="mcContainer"></div>
+<div class="section">PART II – ESSAY (6 ITEMS × 5 POINTS = 30 POINTS)</div>
+<p>Answer each question clearly and concisely. Show your understanding of the concept.</p>
+<div id="essayContainer"></div>
 <div class="footer"><b>TOTAL: 100 POINTS</b><br>Java Programming • 2nd Year BSIT</div>
 </main>
+<script>
+const multipleChoiceQuestions = [
+  {
+    id: 1,
+    text: "A programmer wants to create a method that receives the number of minutes and does not return any value. Which declaration is most appropriate?",
+    options: [
+      "A. public int nap(int minutes)",
+      "B. public void nap(int minutes)",
+      "C. public nap(int minutes)",
+      "D. void public nap(minutes)"
+    ]
+  },
+  {
+    id: 2,
+    text: 'Consider: <code>public double computePrice(double price, double discount) { return price - discount; }</code> Which part tells Java what kind of value the method will return?',
+    options: [
+      "A. computePrice",
+      "B. (double price, double discount)",
+      "C. double",
+      "D. public"
+    ]
+  },
+  {
+    id: 3,
+    text: 'A student writes <code>public void display(int x)</code> but forgets to provide the method body. Which part of the method declaration is missing?',
+    options: [
+      "A. Return type",
+      "B. Parameter list",
+      "C. Method body",
+      "D. Access modifier"
+    ]
+  },
+  {
+    id: 4,
+    text: "Which method name best follows the naming convention described in the handout?",
+    options: [
+      "A. CalculateTotal()",
+      "B. calculate_total()",
+      "C. calculateTotal()",
+      "D. CALCULATETOTAL()"
+    ]
+  },
+  {
+    id: 5,
+    text: 'Consider: <code>public void display(int x, double y) { System.out.println(x + y); }</code> What do <code>x</code> and <code>y</code> represent?',
+    options: [
+      "A. Arguments",
+      "B. Parameters",
+      "C. Return values",
+      "D. Access modifiers"
+    ]
+  },
+  {
+    id: 6,
+    text: 'If the programmer calls <code>display(10, 5.5);</code> what are <code>10</code> and <code>5.5</code>?',
+    options: [
+      "A. Parameters",
+      "B. Arguments",
+      "C. Return types",
+      "D. Method bodies"
+    ]
+  },
+  {
+    id: 7,
+    text: 'A method is declared as <code>public void display()</code>. Which statement correctly calls the method?',
+    options: [
+      "A. display;",
+      "B. display();",
+      "C. void display();",
+      "D. call display();"
+    ]
+  },
+  {
+    id: 8,
+    text: "A programmer wants a method to be accessible from classes everywhere in the program. Which access modifier should be used?",
+    options: [
+      "A. private",
+      "B. protected",
+      "C. package-private",
+      "D. public"
+    ]
+  },
+  {
+    id: 9,
+    text: 'A method is declared <code>private</code>. A student tries to call it directly from another class. What is the main problem?',
+    options: [
+      "A. Private methods cannot have parameters.",
+      "B. Private methods cannot return values.",
+      "C. Private methods are accessible only within their own class.",
+      "D. Private methods must always be static."
+    ]
+  },
+  {
+    id: 10,
+    text: 'Which statement correctly describes a <code>protected</code> member based on the handout?',
+    options: [
+      "A. It can only be accessed inside the same method.",
+      "B. It can be accessed within its package and by subclasses in another package.",
+      "C. It can only be accessed by the class that created it.",
+      "D. It is accessible from every class."
+    ]
+  },
+  {
+    id: 11,
+    text: 'Consider: <code>class Student { static int count = 0; }</code> Three Student objects are created. How many copies of <code>count</code> exist?',
+    options: [
+      "A. One",
+      "B. Two",
+      "C. Three",
+      "D. Four"
+    ]
+  },
+  {
+    id: 12,
+    text: "Why would a programmer use a static variable for a student counter?",
+    options: [
+      "A. Each object needs a completely separate counter.",
+      "B. All objects need to share the same counter value.",
+      "C. Static variables cannot be changed.",
+      "D. Static variables automatically become constants."
+    ]
+  },
+  {
+    id: 13,
+    text: 'Consider: <code>class Counter { static int count = 0; void increment() { count++; } }</code> If two different objects each call <code>increment()</code> once, what is the value of <code>count</code>?',
+    options: [
+      "A. 0",
+      "B. 1",
+      "C. 2",
+      "D. It depends on the object"
+    ]
+  },
+  {
+    id: 14,
+    text: 'Why does <code>obj1.increment(); obj2.increment();</code> produce the same shared value when <code>count</code> is static?',
+    options: [
+      "A. Each object automatically copies the other's variables.",
+      "B. Static variables are shared among all instances of the class.",
+      "C. Java prevents objects from having variables.",
+      "D. increment() automatically becomes static."
+    ]
+  },
+  {
+    id: 15,
+    text: "Which statement best describes a static method?",
+    options: [
+      "A. It belongs to a specific object.",
+      "B. It belongs to the class.",
+      "C. It can only be called from a constructor.",
+      "D. It must always return an integer."
+    ]
+  },
+  {
+    id: 16,
+    text: "A programmer creates a utility method that does not need any object-specific information. Which design is most appropriate?",
+    options: [
+      "A. Make the method static.",
+      "B. Make the method private only.",
+      "C. Make the method abstract only.",
+      "D. Make the method require an object every time."
+    ]
+  },
+  {
+    id: 17,
+    text: 'Which is the correct way to call the following method? <code>class NumberClass { public static void displayNumber() { System.out.println("Hello"); } }</code>',
+    options: [
+      "A. NumberClass.displayNumber();",
+      "B. displayNumber.NumberClass();",
+      "C. static.displayNumber();",
+      "D. NumberClass->displayNumber();"
+    ]
+  },
+  {
+    id: 18,
+    text: 'Consider: <code>class NumberClass { public static int num = 0; }</code> Which statement correctly changes the shared variable?',
+    options: [
+      "A. NumberClass.num = 10;",
+      "B. NumberClass->num = 10;",
+      "C. static.num = 10;",
+      "D. num.NumberClass = 10;"
+    ]
+  },
+  {
+    id: 19,
+    text: 'Two objects modify the same static variable: <code>nc1.num = 6; nc2.num = 5;</code> What will <code>NumberClass.num</code> contain afterward?',
+    options: [
+      "A. 0",
+      "B. 5",
+      "C. 6",
+      "D. 11"
+    ]
+  },
+  {
+    id: 20,
+    text: 'A student says, "A static variable belongs separately to every object." What is the best correction?',
+    options: [
+      "A. Correct; every object gets its own static variable.",
+      "B. Correct only when the variable is private.",
+      "C. Incorrect; a static variable has one shared copy for the class.",
+      "D. Incorrect; static variables cannot be accessed by objects."
+    ]
+  },
+  {
+    id: 21,
+    text: "Which statement is valid according to the handout?",
+    options: [
+      "A. A static method can directly access an instance method.",
+      "B. A static method can directly access an instance variable.",
+      "C. A static method can access static members.",
+      "D. A static method must first create two objects."
+    ]
+  },
+  {
+    id: 22,
+    text: 'Consider: <code>class Test { int num = 10; public static void display() { System.out.println(num); } }</code> Why does this cause a problem?',
+    options: [
+      "A. num is an instance variable being accessed from a static context.",
+      "B. num is an integer.",
+      "C. display() cannot contain System.out.println().",
+      "D. Static methods cannot print values."
+    ]
+  },
+  {
+    id: 23,
+    text: "Which situation is the best example of using a static field?",
+    options: [
+      "A. Each student has a different name.",
+      "B. Each car has a different color.",
+      "C. All objects need to share a total object count.",
+      "D. Each employee has a different salary."
+    ]
+  },
+  {
+    id: 24,
+    text: "Which situation is more appropriate for an instance variable?",
+    options: [
+      "A. A counter shared by every object",
+      "B. A value unique to each student object",
+      "C. A utility method that does not need object state",
+      "D. A class-wide constant counter"
+    ]
+  },
+  {
+    id: 25,
+    text: "Which pair demonstrates valid method overloading?",
+    options: [
+      "A. draw(int x) / draw(int x)",
+      "B. draw(int x) / draw(double x)",
+      "C. draw(int x) / draw(int y)",
+      "D. draw(int x) / int draw(int x)"
+    ]
+  },
+  {
+    id: 26,
+    text: "Why can these methods coexist: <code>draw(int x)</code> and <code>draw(double x)</code>?",
+    options: [
+      "A. They have different method names.",
+      "B. They have different return types.",
+      "C. They have different parameter types.",
+      "D. They have different access modifiers."
+    ]
+  },
+  {
+    id: 27,
+    text: 'Consider: <code>void draw(String s) { } void draw(int i) { } void draw(int i, double f) { }</code> Which call uses the third overloaded method?',
+    options: [
+      'A. draw("Circle");',
+      "B. draw(10);",
+      "C. draw(10, 5.0);",
+      "D. draw();"
+    ]
+  },
+  {
+    id: 28,
+    text: 'A student attempts: <code>public void display(int x) { } public int display(int x) { }</code> Why is this not valid overloading?',
+    options: [
+      "A. The methods have different return types.",
+      "B. The methods have the same name and parameter types.",
+      "C. The methods are both public.",
+      "D. Java does not allow methods named display."
+    ]
+  },
+  {
+    id: 29,
+    text: "What determines which overloaded method Java should use?",
+    options: [
+      "A. Only the return type",
+      "B. The number and types of arguments",
+      "C. Only the method's access modifier",
+      "D. The method's body length"
+    ]
+  },
+  {
+    id: 30,
+    text: 'Consider: <code>public static void newNumber(int num) { num = 3; }</code> In main, <code>int num = 1; newNumber(num); System.out.println(num);</code> What is printed?',
+    options: [
+      "A. 1",
+      "B. 2",
+      "C. 3",
+      "D. Nothing"
+    ]
+  },
+  {
+    id: 31,
+    text: 'Why does the previous program still print <code>1</code>?',
+    options: [
+      "A. Java ignores method calls.",
+      "B. The method receives a copy of the variable's value.",
+      "C. The method cannot contain assignments.",
+      "D. Local variables are automatically static."
+    ]
+  },
+  {
+    id: 32,
+    text: "Which statement correctly distinguishes a parameter from an argument?",
+    options: [
+      "A. A parameter is the actual value; an argument is the variable in the declaration.",
+      "B. A parameter appears in the method declaration; an argument is supplied when calling the method.",
+      "C. Parameters and arguments are exactly the same concept.",
+      "D. Parameters are always static while arguments are always instance variables."
+    ]
+  },
+  {
+    id: 33,
+    text: "What does autoboxing allow Java to do?",
+    options: [
+      "A. Automatically convert a primitive into its corresponding wrapper object when needed.",
+      "B. Automatically convert every object into a String.",
+      "C. Automatically convert every method into a static method.",
+      "D. Automatically change a method's return type."
+    ]
+  },
+  {
+    id: 34,
+    text: 'Consider: <code>public void draw(Integer i) { System.out.print("Integer"); }</code> followed by <code>draw(10);</code>. If there is no <code>draw(int)</code> version, what can Java do?',
+    options: [
+      "A. Reject the call because 10 cannot be used.",
+      "B. Convert the primitive int to Integer through autoboxing.",
+      "C. Convert Integer into double.",
+      "D. Convert the method into static form."
+    ]
+  },
+  {
+    id: 35,
+    text: 'Consider overloaded methods <code>draw(Integer i)</code> and <code>draw(int i)</code>, followed by <code>draw(10);</code>. Which output should be expected?',
+    options: [
+      "A. Integer",
+      "B. int",
+      "C. 10",
+      "D. No output"
+    ]
+  }
+];
+
+const essayQuestions = [
+  {
+    id: 36,
+    text: "Explain the difference between a parameter and an argument. Give a simple Java example showing both."
+  },
+  {
+    id: 37,
+    text: "A class is designed to keep track of how many objects have been created. Explain why a static variable would be appropriate for this purpose. Describe what would happen if the variable were instead an instance variable."
+  },
+  {
+    id: 38,
+    text: "Explain the difference between a static method and an instance method. Give one practical situation where using a static method would be more appropriate."
+  },
+  {
+    id: 39,
+    text: '"I can create two methods with the same name as long as they have different return types." Do you agree or disagree? Explain your answer using the concept of method overloading and provide a Java example.'
+  },
+  {
+    id: 40,
+    text: "Consider the following code:<pre>public static void changeValue(int num) {\n    num = 100;\n}\n\npublic static void main(String[] args) {\n    int value = 50;\n    changeValue(value);\n    System.out.println(value);\n}</pre> Explain why the output remains 50 even though the method changes num to 100. Relate your explanation to Java's pass-by-value behavior."
+  },
+  {
+    id: 41,
+    text: "Explain autoboxing in Java in your own words. Why can the following call work even though the method expects an Integer?<pre>public void display(Integer number) {\n    System.out.println(number);\n}\n\ndisplay(10);</pre>"
+  }
+];
+
+// Render Multiple Choice Questions
+function renderMCQuestions() {
+  const container = document.getElementById('mcContainer');
+  multipleChoiceQuestions.forEach(question => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    
+    let optionsHTML = '';
+    question.options.forEach((option, index) => {
+      optionsHTML += `<label class="option"><input type="radio" name="q${question.id}"> ${option}</label>`;
+    });
+    
+    div.innerHTML = `<strong>${question.id}. ${question.text}</strong>${optionsHTML}`;
+    container.appendChild(div);
+  });
+}
+
+// Render Essay Questions
+function renderEssayQuestions() {
+  const container = document.getElementById('essayContainer');
+  essayQuestions.forEach(question => {
+    const div = document.createElement('div');
+    div.className = 'essay';
+    
+    let answerLines = '';
+    for (let i = 0; i < 5; i++) {
+      answerLines += '<div class="answer-line"></div>';
+    }
+    
+    div.innerHTML = `<strong>${question.id}. ${question.text}</strong>${answerLines}`;
+    container.appendChild(div);
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  renderMCQuestions();
+  renderEssayQuestions();
+});
+</script>
 </body>
 </html>
