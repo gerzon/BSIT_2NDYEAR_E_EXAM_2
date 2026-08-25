@@ -3,508 +3,389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2nd Year BSIT - Java Understanding Quiz For Last Batch</title>
+<title>2nd Year BSIT - Understanding-Type Examination (FOR BATCH 2)</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://oqwehqvhhdvxjxugdukh.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xd2VocXZoaGR2eGp4dWdkdWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NTk3MzEsImV4cCI6MjEwMzIzNTczMX0.SidafkMBgTFj9wqqk8nuIYMNbfUpaYVa5WBJUvnYUl4";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+</script>
+
 <style>
-:root{--sti-blue:#0054a6;--sti-yellow:#ffd200;--dark:#12324a;--light:#f4f8fc}
-*{box-sizing:border-box}
-body{margin:0;background:#e9eef3;color:#202830;font-family:Arial,Helvetica,sans-serif;line-height:1.5}
-.header{background:linear-gradient(135deg,var(--sti-blue),#003b78);color:#fff;padding:28px 20px;text-align:center;border-bottom:7px solid var(--sti-yellow)}
-.header .brand{font-weight:800;letter-spacing:1.5px;font-size:18px}
-.header h1{margin:6px 0 2px;font-size:27px}
-.header h2{margin:0;font-size:18px;font-weight:600}
-.container{max-width:980px;margin:25px auto;background:#fff;padding:35px;box-shadow:0 4px 18px #0001}
-.info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
-.field{border:1px solid #c9d5df;padding:10px;border-radius:5px}
-.instructions{background:#fff8d8;border-left:6px solid var(--sti-yellow);padding:15px 18px;margin-bottom:28px}
-.section{background:var(--sti-blue);color:white;padding:11px 15px;border-left:8px solid var(--sti-yellow);margin:30px 0 18px;font-size:18px;font-weight:bold}
-.question{padding:14px 14px 17px;border-bottom:1px solid #dce4ea}
-.question strong{display:block;margin-bottom:8px}
-.option{display:block;padding:4px 8px;margin:2px 0}
-.essay{border:1px solid #d4dee7;border-radius:7px;padding:18px;margin:14px 0}
-.answer-line{border-bottom:1px solid #999;height:28px;margin-top:9px}
-.footer{background:#f0f4f7;border-top:3px solid var(--sti-yellow);padding:15px;text-align:center;color:#52616d;margin-top:35px}
-code,pre{font-family:"Courier New",monospace}
-code{background:#eef3f7;padding:2px 4px;border-radius:3px}
-pre{background:#f5f7f9;padding:12px;overflow:auto;border-left:4px solid var(--sti-blue)}
-@media print{body{background:white}.container{box-shadow:none;margin:0;max-width:none;padding:20px}.header{break-after:avoid}.question,.essay{break-inside:avoid}.section{break-after:avoid}}
-@media (max-width: 760px){
-  .container{padding:18px 14px;margin:16px auto}
-  .info{grid-template-columns:1fr}
-  .header{padding:22px 14px}
-  .header h1{font-size:24px}
-  .header h2{font-size:16px}
-  .section{font-size:16px;padding:10px 12px}
-  .question{padding:12px 10px 14px}
-  .option{padding:6px 4px}
-  .essay{padding:14px 10px}
-  pre{white-space:pre-wrap;word-break:break-word}
-  code{word-break:break-word}
-}
-@media (max-width: 420px){
-  .header .brand{font-size:14px;letter-spacing:1px}
-  .header h1{font-size:20px}
-  .header h2{font-size:15px}
-  .container{padding:14px 10px}
-  .instructions{padding:12px 14px}
-  .section{font-size:15px}
-  .question strong{font-size:15px}
-  .option{font-size:14px;line-height:1.5}
-  .answer-line{height:24px}
-}
+  :root{
+    --sti-blue:#003b7a;
+    --sti-blue-dark:#002b5c;
+    --sti-yellow:#ffc400;
+    --light:#f4f7fb;
+    --text:#1f2937;
+    --border:#d9e1ec;
+    --success:#16803c;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--light);
+    color:var(--text);
+    line-height:1.5;
+  }
+  .topbar{height:9px;background:var(--sti-yellow)}
+  header{
+    background:linear-gradient(135deg,var(--sti-blue-dark),var(--sti-blue));
+    color:#fff;padding:28px 20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+  }
+  .header-inner{max-width:1000px;margin:auto}
+  .brand{font-weight:800;letter-spacing:.5px;color:var(--sti-yellow);font-size:18px}
+  h1{margin:7px 0 4px;font-size:28px}
+  .subtitle{margin:0;color:#e9f1ff}
+  .container{max-width:1000px;margin:24px auto;padding:0 15px}
+  .card{
+    background:#fff;border:1px solid var(--border);border-radius:12px;
+    padding:22px;margin-bottom:18px;box-shadow:0 3px 12px rgba(0,0,0,.05)
+  }
+  .section-title{
+    background:var(--sti-blue);color:#fff;padding:12px 15px;border-radius:8px;
+    margin:-22px -22px 20px;font-size:18px;font-weight:700;
+    border-bottom:4px solid var(--sti-yellow)
+  }
+  .meta{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+  label{font-weight:700;font-size:14px}
+  input[type=text], input[type=date], textarea{
+    width:100%;margin-top:6px;border:1px solid #bcc8d8;border-radius:7px;
+    padding:11px;font:inherit;background:#fff
+  }
+  .instructions{background:#fff8d9;border-left:5px solid var(--sti-yellow);padding:13px 15px;border-radius:6px}
+  .grading-scale{width:100%;margin-top:14px;border-collapse:collapse;background:#fff}
+  .grading-scale th,.grading-scale td{padding:9px 11px;border:1px solid #e2c75b;text-align:left}
+  .grading-scale th{background:var(--sti-blue);color:#fff}
+  .grading-scale tr:nth-child(even){background:#fffdf0}
+  .question{padding:18px 0;border-bottom:1px solid #e6ebf2}
+  .question:last-child{border-bottom:0}
+  .qtext{font-weight:700;margin-bottom:11px}
+  .option{
+    display:block;padding:9px 11px;margin:6px 0;border:1px solid transparent;
+    border-radius:7px;cursor:pointer
+  }
+  .option:hover{background:#eef5ff;border-color:#c7d9f2}
+  .option input{margin-right:9px}
+  .essay textarea{min-height:150px;resize:vertical}
+  .points{font-size:12px;color:#667085;font-weight:normal}
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  button{
+    border:0;border-radius:8px;padding:13px 20px;font-weight:700;cursor:pointer;
+    font-size:15px
+  }
+  .submit{background:var(--sti-blue);color:#fff}
+  .reset{background:#e9eef5;color:#253247}
+  button:hover{opacity:.92}
+  #result{
+    display:none;position:fixed;inset:0;z-index:10;overflow-y:auto;
+    margin:0;padding:28px 15px;background:rgba(0,43,92,.55)
+  }
+  .result-dialog{
+    max-width:1000px;margin:auto;background:#fff;border:1px solid var(--border);
+    border-radius:12px;padding:22px;box-shadow:0 12px 35px rgba(0,0,0,.25)
+  }
+  .result-close{float:right;background:#e9eef5;color:#253247;padding:8px 13px}
+  .score{
+    font-size:30px;font-weight:800;color:var(--sti-blue);margin:5px 0
+  }
+  .success{color:var(--success);font-weight:700}
+  .warning{color:#8a5a00}
+  .review{margin-top:15px}
+  .wrong{background:#fff0f0;border-left:4px solid #c62828;padding:9px;margin:5px 0}
+  .correct{background:#eefaf1;border-left:4px solid var(--success);padding:9px;margin:5px 0}
+  .option.answer-correct{background:#eefaf1;border-color:var(--success)}
+  .option.answer-wrong{background:#fff0f0;border-color:#c62828}
+  .loadingScreen{
+    position:fixed;inset:0;z-index:30;display:grid;place-items:center;
+    padding:20px;background:var(--sti-blue-dark);color:#fff
+  }
+  .loading-dialog{text-align:center}
+  .loading-spinner{
+    width:76px;height:76px;margin:0 auto 18px;border:8px solid rgba(255,255,255,.28);
+    border-top-color:var(--sti-yellow);border-radius:50%;animation:spin 1s linear infinite
+  }
+  .loading-dialog p{margin:0;font-weight:700}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #submissionLoading{display:none;z-index:40}
+  #welcomeScreen{
+    position:fixed;inset:0;z-index:20;display:none;place-items:center;
+    padding:20px;background:rgba(0,43,92,.92);color:#fff
+  }
+  .welcome-dialog{
+    width:min(560px,100%);text-align:center;background:#fff;color:var(--text);
+    border-top:7px solid var(--sti-yellow);border-radius:12px;padding:34px 28px;
+    box-shadow:0 12px 35px rgba(0,0,0,.28)
+  }
+  .welcome-dialog h2{margin:0 0 8px;color:var(--sti-blue);font-size:27px}
+  .welcome-dialog p{margin:8px 0 22px}
+  .welcome-dialog button{background:var(--sti-blue);color:#fff}
+  .loading-message{color:#667085;font-size:14px}
+  footer{text-align:center;padding:25px;color:#667085;font-size:13px}
+  @media(max-width:700px){
+    .meta{grid-template-columns:1fr}
+    h1{font-size:22px}
+    .card{padding:16px}
+    .section-title{margin:-16px -16px 16px}
+  }
+  @media print{
+    .actions,#result{display:none!important}
+    body{background:#fff}
+    .card{box-shadow:none}
+  }
 </style>
 </head>
 <body>
-<header class="header">
-<div class="brand">STI COLLEGE</div>
-<h1>2nd Year BSIT - Java Understanding Quiz For Last Batch</h1>
-<h2>UNDERSTANDING-TYPE QUIZ</h2>
-<div>Coverage: Designing Methods • Static Methods and Fields • Method Overloading</div>
+<div class="topbar"></div>
+<section id="loadingScreen" class="loadingScreen" role="status" aria-live="polite">
+  <div class="loading-dialog">
+    <div class="loading-spinner" aria-hidden="true"></div>
+    <p>Loading examination...</p>
+  </div>
+</section>
+<section id="submissionLoading" class="loadingScreen" role="status" aria-live="polite">
+  <div class="loading-dialog">
+    <div class="loading-spinner" aria-hidden="true"></div>
+    <p>Submitting your examination...</p>
+  </div>
+</section>
+<section id="welcomeScreen" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="welcome-dialog">
+    <h2 id="welcomeTitle">Welcome to the Examination</h2>
+    <p class="loading-message" id="loadingMessage">Preparing your randomized multiple-choice questions...</p>
+    <button id="startExam" type="button" disabled>Loading...</button>
+  </div>
+</section>
+<header>
+  <div class="header-inner">
+    <div class="brand">STI COLLEGE</div>
+    <h1>2nd Year BSIT – Understanding-Type Examination</h1>
+    <p class="subtitle">C# Collections, Generics, Delegates and Events</p>
+  </div>
 </header>
+
 <main class="container">
-<div class="info">
-<div class="field"><b>Name:</b> __________________________________________</div>
-<div class="field"><b>Section:</b> _________________________________________</div>
-<div class="field"><b>Date:</b> __________________________________________</div>
-<div class="field"><b>Score:</b> __________ / 100</div>
-</div>
-<div class="instructions">
-<b>GENERAL INSTRUCTIONS</b>
-<ul>
-<li>Read each question carefully before selecting your answer.</li>
-<li>Choose the best answer for each multiple-choice item.</li>
-<li>For code-based questions, determine the actual behavior of the program.</li>
-<li>For the essay section, answer clearly and concisely and support your explanation with appropriate Java examples when required.</li>
-<li>Do not erase or alter answers without clearly indicating your final answer.</li>
-</ul>
-</div>
-<div class="section">PART I – MULTIPLE CHOICE (35 ITEMS × 2 POINTS = 70 POINTS)</div>
-<p>Select the letter of the best answer.</p>
-<div id="mcContainer"></div>
-<div class="section">PART II – ESSAY (6 ITEMS × 5 POINTS = 30 POINTS)</div>
-<p>Answer each question clearly and concisely. Show your understanding of the concept.</p>
-<div id="essayContainer"></div>
-<div class="footer"><b>TOTAL: 100 POINTS</b><br>Java Programming • 2nd Year BSIT</div>
+  <form id="examForm">
+    <section class="card">
+      <div class="section-title">Student Information</div>
+      <div class="meta">
+        <div><label for="name">Name</label><input id="name" type="text" placeholder="Enter your full name" required></div>
+        <div><label for="section">Section</label><input id="section" type="text" placeholder="Section" value="BSIT 2101" disabled></div>
+        <div><label for="date">Date</label><input id="date" type="date" required></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">Instructions</div>
+      <div class="instructions">
+        <strong>Part I:</strong> Choose the best answer. 35 items × 2 points = 70 points.<br>
+        <strong>Part II:</strong> Answer clearly using appropriate C# terminology and examples. 6 items × 5 points = 30 points.<br>
+        <strong>Total:</strong> 100 points.
+        <table class="grading-scale" aria-label="Personal grading scale">
+          <thead>
+            <tr><th>Score</th><th>Recording</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>90 - 100</td><td>Will be recorded as 100 points</td></tr>
+            <tr><td>70 - 89</td><td>Actual score</td></tr>
+            <tr><td>69 &amp; below</td><td>Will be recorded as zero points</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">Part I – Multiple Choice <span class="points">(35 items × 2 points = 70 points)</span></div>
+      <div id="mcqContainer"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">Part II – Essay <span class="points">(6 items × 5 points = 30 points)</span></div>
+      <div id="essayContainer"></div>
+      <p class="warning"><strong>Note:</strong> Essay responses are not automatically graded. The instructor should evaluate Part II manually.</p>
+    </section>
+
+    <section class="card">
+      <div class="actions">
+        <button class="submit" type="submit">Submit Examination</button>
+        <button class="reset" type="button" onclick="resetExam()">Reset Answers</button>
+      </div>
+    </section>
+  </form>
+
+  <section id="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+    <div class="result-dialog">
+      <button class="result-close" type="button" onclick="closeResult()" aria-label="Close examination result">Close</button>
+      <div id="resultTitle" class="section-title">Examination Result</div>
+      <div id="resultText"></div>
+      <div id="review" class="review"></div>
+    </div>
+  </section>
 </main>
+
+<footer>3rd Year BSIT • C# Collections, Generics, Delegates and Events</footer>
+
 <script>
-const multipleChoiceQuestions = [
-  {
-    id: 1,
-    text: "A programmer wants to create a method that receives the number of minutes and does not return any value. Which declaration is most appropriate?",
-    options: [
-      "A. public int nap(int minutes)",
-      "B. public void nap(int minutes)",
-      "C. public nap(int minutes)",
-      "D. void public nap(minutes)"
-    ]
-  },
-  {
-    id: 2,
-    text: 'Consider: <code>public double computePrice(double price, double discount) { return price - discount; }</code> Which part tells Java what kind of value the method will return?',
-    options: [
-      "A. computePrice",
-      "B. (double price, double discount)",
-      "C. double",
-      "D. public"
-    ]
-  },
-  {
-    id: 3,
-    text: 'A student writes <code>public void display(int x)</code> but forgets to provide the method body. Which part of the method declaration is missing?',
-    options: [
-      "A. Return type",
-      "B. Parameter list",
-      "C. Method body",
-      "D. Access modifier"
-    ]
-  },
-  {
-    id: 4,
-    text: "Which method name best follows the naming convention described in the handout?",
-    options: [
-      "A. CalculateTotal()",
-      "B. calculate_total()",
-      "C. calculateTotal()",
-      "D. CALCULATETOTAL()"
-    ]
-  },
-  {
-    id: 5,
-    text: 'Consider: <code>public void display(int x, double y) { System.out.println(x + y); }</code> What do <code>x</code> and <code>y</code> represent?',
-    options: [
-      "A. Arguments",
-      "B. Parameters",
-      "C. Return values",
-      "D. Access modifiers"
-    ]
-  },
-  {
-    id: 6,
-    text: 'If the programmer calls <code>display(10, 5.5);</code> what are <code>10</code> and <code>5.5</code>?',
-    options: [
-      "A. Parameters",
-      "B. Arguments",
-      "C. Return types",
-      "D. Method bodies"
-    ]
-  },
-  {
-    id: 7,
-    text: 'A method is declared as <code>public void display()</code>. Which statement correctly calls the method?',
-    options: [
-      "A. display;",
-      "B. display();",
-      "C. void display();",
-      "D. call display();"
-    ]
-  },
-  {
-    id: 8,
-    text: "A programmer wants a method to be accessible from classes everywhere in the program. Which access modifier should be used?",
-    options: [
-      "A. private",
-      "B. protected",
-      "C. package-private",
-      "D. public"
-    ]
-  },
-  {
-    id: 9,
-    text: 'A method is declared <code>private</code>. A student tries to call it directly from another class. What is the main problem?',
-    options: [
-      "A. Private methods cannot have parameters.",
-      "B. Private methods cannot return values.",
-      "C. Private methods are accessible only within their own class.",
-      "D. Private methods must always be static."
-    ]
-  },
-  {
-    id: 10,
-    text: 'Which statement correctly describes a <code>protected</code> member based on the handout?',
-    options: [
-      "A. It can only be accessed inside the same method.",
-      "B. It can be accessed within its package and by subclasses in another package.",
-      "C. It can only be accessed by the class that created it.",
-      "D. It is accessible from every class."
-    ]
-  },
-  {
-    id: 11,
-    text: 'Consider: <code>class Student { static int count = 0; }</code> Three Student objects are created. How many copies of <code>count</code> exist?',
-    options: [
-      "A. One",
-      "B. Two",
-      "C. Three",
-      "D. Four"
-    ]
-  },
-  {
-    id: 12,
-    text: "Why would a programmer use a static variable for a student counter?",
-    options: [
-      "A. Each object needs a completely separate counter.",
-      "B. All objects need to share the same counter value.",
-      "C. Static variables cannot be changed.",
-      "D. Static variables automatically become constants."
-    ]
-  },
-  {
-    id: 13,
-    text: 'Consider: <code>class Counter { static int count = 0; void increment() { count++; } }</code> If two different objects each call <code>increment()</code> once, what is the value of <code>count</code>?',
-    options: [
-      "A. 0",
-      "B. 1",
-      "C. 2",
-      "D. It depends on the object"
-    ]
-  },
-  {
-    id: 14,
-    text: 'Why does <code>obj1.increment(); obj2.increment();</code> produce the same shared value when <code>count</code> is static?',
-    options: [
-      "A. Each object automatically copies the other's variables.",
-      "B. Static variables are shared among all instances of the class.",
-      "C. Java prevents objects from having variables.",
-      "D. increment() automatically becomes static."
-    ]
-  },
-  {
-    id: 15,
-    text: "Which statement best describes a static method?",
-    options: [
-      "A. It belongs to a specific object.",
-      "B. It belongs to the class.",
-      "C. It can only be called from a constructor.",
-      "D. It must always return an integer."
-    ]
-  },
-  {
-    id: 16,
-    text: "A programmer creates a utility method that does not need any object-specific information. Which design is most appropriate?",
-    options: [
-      "A. Make the method static.",
-      "B. Make the method private only.",
-      "C. Make the method abstract only.",
-      "D. Make the method require an object every time."
-    ]
-  },
-  {
-    id: 17,
-    text: 'Which is the correct way to call the following method? <code>class NumberClass { public static void displayNumber() { System.out.println("Hello"); } }</code>',
-    options: [
-      "A. NumberClass.displayNumber();",
-      "B. displayNumber.NumberClass();",
-      "C. static.displayNumber();",
-      "D. NumberClass->displayNumber();"
-    ]
-  },
-  {
-    id: 18,
-    text: 'Consider: <code>class NumberClass { public static int num = 0; }</code> Which statement correctly changes the shared variable?',
-    options: [
-      "A. NumberClass.num = 10;",
-      "B. NumberClass->num = 10;",
-      "C. static.num = 10;",
-      "D. num.NumberClass = 10;"
-    ]
-  },
-  {
-    id: 19,
-    text: 'Two objects modify the same static variable: <code>nc1.num = 6; nc2.num = 5;</code> What will <code>NumberClass.num</code> contain afterward?',
-    options: [
-      "A. 0",
-      "B. 5",
-      "C. 6",
-      "D. 11"
-    ]
-  },
-  {
-    id: 20,
-    text: 'A student says, "A static variable belongs separately to every object." What is the best correction?',
-    options: [
-      "A. Correct; every object gets its own static variable.",
-      "B. Correct only when the variable is private.",
-      "C. Incorrect; a static variable has one shared copy for the class.",
-      "D. Incorrect; static variables cannot be accessed by objects."
-    ]
-  },
-  {
-    id: 21,
-    text: "Which statement is valid according to the handout?",
-    options: [
-      "A. A static method can directly access an instance method.",
-      "B. A static method can directly access an instance variable.",
-      "C. A static method can access static members.",
-      "D. A static method must first create two objects."
-    ]
-  },
-  {
-    id: 22,
-    text: 'Consider: <code>class Test { int num = 10; public static void display() { System.out.println(num); } }</code> Why does this cause a problem?',
-    options: [
-      "A. num is an instance variable being accessed from a static context.",
-      "B. num is an integer.",
-      "C. display() cannot contain System.out.println().",
-      "D. Static methods cannot print values."
-    ]
-  },
-  {
-    id: 23,
-    text: "Which situation is the best example of using a static field?",
-    options: [
-      "A. Each student has a different name.",
-      "B. Each car has a different color.",
-      "C. All objects need to share a total object count.",
-      "D. Each employee has a different salary."
-    ]
-  },
-  {
-    id: 24,
-    text: "Which situation is more appropriate for an instance variable?",
-    options: [
-      "A. A counter shared by every object",
-      "B. A value unique to each student object",
-      "C. A utility method that does not need object state",
-      "D. A class-wide constant counter"
-    ]
-  },
-  {
-    id: 25,
-    text: "Which pair demonstrates valid method overloading?",
-    options: [
-      "A. draw(int x) / draw(int x)",
-      "B. draw(int x) / draw(double x)",
-      "C. draw(int x) / draw(int y)",
-      "D. draw(int x) / int draw(int x)"
-    ]
-  },
-  {
-    id: 26,
-    text: "Why can these methods coexist: <code>draw(int x)</code> and <code>draw(double x)</code>?",
-    options: [
-      "A. They have different method names.",
-      "B. They have different return types.",
-      "C. They have different parameter types.",
-      "D. They have different access modifiers."
-    ]
-  },
-  {
-    id: 27,
-    text: 'Consider: <code>void draw(String s) { } void draw(int i) { } void draw(int i, double f) { }</code> Which call uses the third overloaded method?',
-    options: [
-      'A. draw("Circle");',
-      "B. draw(10);",
-      "C. draw(10, 5.0);",
-      "D. draw();"
-    ]
-  },
-  {
-    id: 28,
-    text: 'A student attempts: <code>public void display(int x) { } public int display(int x) { }</code> Why is this not valid overloading?',
-    options: [
-      "A. The methods have different return types.",
-      "B. The methods have the same name and parameter types.",
-      "C. The methods are both public.",
-      "D. Java does not allow methods named display."
-    ]
-  },
-  {
-    id: 29,
-    text: "What determines which overloaded method Java should use?",
-    options: [
-      "A. Only the return type",
-      "B. The number and types of arguments",
-      "C. Only the method's access modifier",
-      "D. The method's body length"
-    ]
-  },
-  {
-    id: 30,
-    text: 'Consider: <code>public static void newNumber(int num) { num = 3; }</code> In main, <code>int num = 1; newNumber(num); System.out.println(num);</code> What is printed?',
-    options: [
-      "A. 1",
-      "B. 2",
-      "C. 3",
-      "D. Nothing"
-    ]
-  },
-  {
-    id: 31,
-    text: 'Why does the previous program still print <code>1</code>?',
-    options: [
-      "A. Java ignores method calls.",
-      "B. The method receives a copy of the variable's value.",
-      "C. The method cannot contain assignments.",
-      "D. Local variables are automatically static."
-    ]
-  },
-  {
-    id: 32,
-    text: "Which statement correctly distinguishes a parameter from an argument?",
-    options: [
-      "A. A parameter is the actual value; an argument is the variable in the declaration.",
-      "B. A parameter appears in the method declaration; an argument is supplied when calling the method.",
-      "C. Parameters and arguments are exactly the same concept.",
-      "D. Parameters are always static while arguments are always instance variables."
-    ]
-  },
-  {
-    id: 33,
-    text: "What does autoboxing allow Java to do?",
-    options: [
-      "A. Automatically convert a primitive into its corresponding wrapper object when needed.",
-      "B. Automatically convert every object into a String.",
-      "C. Automatically convert every method into a static method.",
-      "D. Automatically change a method's return type."
-    ]
-  },
-  {
-    id: 34,
-    text: 'Consider: <code>public void draw(Integer i) { System.out.print("Integer"); }</code> followed by <code>draw(10);</code>. If there is no <code>draw(int)</code> version, what can Java do?',
-    options: [
-      "A. Reject the call because 10 cannot be used.",
-      "B. Convert the primitive int to Integer through autoboxing.",
-      "C. Convert Integer into double.",
-      "D. Convert the method into static form."
-    ]
-  },
-  {
-    id: 35,
-    text: 'Consider overloaded methods <code>draw(Integer i)</code> and <code>draw(int i)</code>, followed by <code>draw(10);</code>. Which output should be expected?',
-    options: [
-      "A. Integer",
-      "B. int",
-      "C. 10",
-      "D. No output"
-    ]
-  }
+const questions = [
+["A programmer wants to store a collection of student names where the number of students may increase or decrease while the program is running. Which collection is most appropriate based on the handout?",["Array","ArrayList","Stack","Queue"],"B"],
+["A program stores Student ID → Student Name and retrieves a student's name by specifying the ID. Which collection is most suitable?",["Stack","Queue","Hashtable","ArrayList"],"C"],
+["A programmer needs a collection that stores key-value pairs while keeping the keys sorted. Which collection should be considered?",["SortedList","Stack","Queue","ArrayList"],"A"],
+["Stack<string> actions contains Open, Edit, Save in that order using Push(). Which item is returned first by Pop()?",["Open","Edit","Save","All three items"],"C"],
+["A browser history feature needs to process the most recently added item first. Which collection behavior fits?",["FIFO","LIFO","Sorted access","Key-value access"],"B"],
+["A customer-service system processes customers in the order they arrive. Which collection best represents this behavior?",["Stack","Queue","Hashtable","SortedList"],"B"],
+["Queue<int> numbers contains 10, 20, 30 in that order. What does Peek() return?",["10","20","30","Nothing"],"A"],
+["Queue<int> numbers contains 10, 20, 30. After int x = numbers.Dequeue(); what is x?",["10","20","30","0"],"A"],
+["A developer wants a collection that stores integers and prevents accidentally adding a string into the same collection. Which is most appropriate?",["ArrayList","Hashtable","List ","List<objack>"],"C"],
+["Why are generic collections useful when developing applications?",["They eliminate variables.","They allow reusable code across different data types.","They automatically connect applications to databases.","They guarantee error-free programs."],"B"],
+["Which statement best describes List<T>?",["It is fixed-size.","It is dynamically allocated and can grow and shrink.","It only stores key-value pairs.","It always follows FIFO."],"B"],
+["List<string> names contains Anna, Ben, Carlo. Which accesses Ben?",["names[0]","names[1]","names[2]","names[\"Ben\"]"],"B"],
+["A list contains Anna, Ben, Carlo, Ben. After names.Remove(\"Ben\"), what happens?",["Both Ben entries are removed.","Only the first matching Ben is removed.","The entire list is removed.","Nothing is removed."],"B"],
+["A programmer wants to determine the position of Carlo in a List<string>. Which method is used?",["Sort()","Remove()","IndexOf()","ContainsValue()"],"C"],
+["If IndexOf() cannot find an element in a List<T>, what does it return?",["0","1","-1","null"],"C"],
+["A student wants to arrange the contents of a list into sorted order. Which method is used?",["Add()","Sort()","Remove()","IndexOf()"],"B"],
+["Which correctly compares Stack<T> and Queue<T>?",["Stack FIFO; Queue LIFO","Both FIFO","Stack LIFO; Queue FIFO","Both LIFO"],"C"],
+["Which operation adds an item to a Stack<T>?",["Enqueue","Dequeue","Push","Add"],"C"],
+["Which operation removes the item at the top of a Stack<T>?",["Pop","Peek","Push","Enqueue"],"A"],
+["What is the main difference between Peek() and Pop() on a stack?",["Peek removes; Pop adds.","Peek views without removing; Pop removes.","Both remove.","Both add."],"B"],
+["A developer wants a method reference that can point to another method when the signature matches. What C# feature should be used?",["Interface","Delegate","ArrayList","Hashtable"],"B"],
+["Which statement best describes a delegate?",["Stores only integers.","Encapsulates a method and holds a reference to a method.","Automatically creates a database connection.","Replaces every class."],"B"],
+["Given public delegate int MathOperation(int x, int y); which method could it reference?",["int Add(int x, int y)","void Add(int x, int y)","int Add(int x)","string Add(int x, int y)"],"A"],
+["Why must a referenced method have a matching signature?",["Delegate determines class name.","Delegate specifies expected return type and parameters.","Delegate changes parameters automatically.","Delegate only works with static methods."],"B"],
+["Which correctly creates a delegate referencing Formula.getSum?",["MathOperation op = new MathOperation(Formula.getSum);","MathOperation op = Formula.getSum();","MathOperation op = new Formula();","Formula op = MathOperation.getSum;"],"A"],
+["What is the main advantage of public delegate X DisplayOutput<X>(X arg)?",["Only integers.","It can reference methods using different data types while following the same pattern.","It removes methods.","It only references two-parameter methods."],"B"],
+["If X is double in DisplayOutput<double>, what method can it reference?",["A method returning double and receiving one double parameter","A method returning string and receiving one double parameter","A method returning double and receiving two int parameters","A void method with no parameters"],"A"],
+["Which best describes an event in C#?",["A collection that stores objects.","A class member fired when a specific action occurs.","Always a database operation.","A special array."],"B"],
+["A button click automatically runs a registered method. What concept is demonstrated?",["Event handling","Array indexing","Generic collection","Sorting"],"A"],
+["What is the role of an event handler?",["Stores objects.","The method invoked when an event occurs.","Creates a generic type.","Sorts an ArrayList."],"B"],
+["Before declaring an event, what should be declared first according to the handout?",["A queue","A delegate","An ArrayList","A constructor"],"B"],
+["An event uses a delegate that accepts two parameters. What should a registered method generally have?",["No parameters","One parameter","Two matching parameters","Three parameters"],"C"],
+["What is the purpose of eventName += delegateInstance;?",["Removes a subscription.","Registers/adds a delegate to the event.","Creates a class.","Sorts subscribers."],"B"],
+["Which accessors are involved in registering and unregistering event subscriptions?",["get and set","push and pop","add and remove","enqueue and dequeue"],"C"],
+["A programmer needs a mechanism that can reference methods from different classes as long as their signatures match. Which is the better fit?",["Delegate","ArrayList","Queue","SortedList"],"A"]
 ];
 
-const essayQuestions = [
-  {
-    id: 36,
-    text: "Explain the difference between a parameter and an argument. Give a simple Java example showing both."
-  },
-  {
-    id: 37,
-    text: "A class is designed to keep track of how many objects have been created. Explain why a static variable would be appropriate for this purpose. Describe what would happen if the variable were instead an instance variable."
-  },
-  {
-    id: 38,
-    text: "Explain the difference between a static method and an instance method. Give one practical situation where using a static method would be more appropriate."
-  },
-  {
-    id: 39,
-    text: '"I can create two methods with the same name as long as they have different return types." Do you agree or disagree? Explain your answer using the concept of method overloading and provide a Java example.'
-  },
-  {
-    id: 40,
-    text: "Consider the following code:<pre>public static void changeValue(int num) {\n    num = 100;\n}\n\npublic static void main(String[] args) {\n    int value = 50;\n    changeValue(value);\n    System.out.println(value);\n}</pre> Explain why the output remains 50 even though the method changes num to 100. Relate your explanation to Java's pass-by-value behavior."
-  },
-  {
-    id: 41,
-    text: "Explain autoboxing in Java in your own words. Why can the following call work even though the method expects an Integer?<pre>public void display(Integer number) {\n    System.out.println(number);\n}\n\ndisplay(10);</pre>"
-  }
+const essays = [
+["Collections in a Real-World System","Imagine that you are developing a school enrollment system. Explain which collection you would use for: a list of students, student ID and student name pairs, students waiting to be processed, and a collection where the most recently added item should be processed first. Explain why you selected each collection."],
+["List<T> vs. Array","Explain the difference between a traditional array and List<T> in terms of size and flexibility. Give one practical situation where List<T> would be more convenient than an array."],
+["Stack vs. Queue","Explain the difference between LIFO and FIFO. Give one real-world example for each and explain why the behavior of the collection fits the example."],
+["Understanding Delegates","In your own words, explain what a delegate is and why a programmer would use one instead of directly calling a method. Include a simple programming scenario where a delegate would be useful."],
+["Events and Event Handlers","Explain the relationship among a delegate, event, and event handler in C#. Describe what happens when an event occurs and a method has been registered to respond to it."],
+["Generics and Reusability","Explain why generics are useful in C#. Using List<T>, Queue<T>, or Stack<T> as an example, describe how generics make code more reusable and allow the programmer to work with different data types."]
 ];
 
-// Render Multiple Choice Questions
-function renderMCQuestions() {
-  const container = document.getElementById('mcContainer');
-  multipleChoiceQuestions.forEach(question => {
-    const div = document.createElement('div');
-    div.className = 'question';
-    
-    let optionsHTML = '';
-    question.options.forEach((option, index) => {
-      optionsHTML += `<label class="option"><input type="radio" name="q${question.id}"> ${option}</label>`;
+function renderMCQ(){
+  const c=document.getElementById("mcqContainer");
+  c.innerHTML=questions.map((q,i)=>{
+    const n=i+1;
+    return `<div class="question">
+      <div class="qtext">${n}. ${q[0]}</div>
+      ${q[1].map((opt,j)=>{
+        const letter=String.fromCharCode(65+j);
+        return `<label class="option"><input type="radio" name="q${n}" value="${letter}"> <strong>${letter}.</strong> ${opt}</label>`;
+      }).join("")}
+    </div>`;
+  }).join("");
+}
+function renderEssays(){
+  const c=document.getElementById("essayContainer");
+  c.innerHTML=essays.map((e,i)=>`<div class="question essay">
+    <div class="qtext">${i+36}. ${e[0]} <span class="points">(5 points)</span></div>
+    <div>${e[1]}</div>
+    <textarea name="essay${i}" placeholder="Type your answer here..."></textarea>
+  </div>`).join("");
+}
+function shuffleQuestions(){
+  for(let i=questions.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [questions[i],questions[j]]=[questions[j],questions[i]];
+  }
+}
+async function grade(){
+  document.getElementById("submissionLoading").style.display="grid";
+  document.body.style.overflow="hidden";
+  let correct=0, answered=0, review=[];
+  questions.forEach((q,i)=>{
+    const selected=document.querySelector(`input[name="q${i+1}"]:checked`);
+    document.querySelectorAll(`input[name="q${i+1}"]`).forEach(input=>{
+      const option=input.closest(".option");
+      option.classList.toggle("answer-correct",input.value===q[2]);
+      option.classList.toggle("answer-wrong",Boolean(selected)&&input===selected&&input.value!==q[2]);
     });
-    
-    div.innerHTML = `<strong>${question.id}. ${question.text}</strong>${optionsHTML}`;
-    container.appendChild(div);
-  });
-}
-
-// Render Essay Questions
-function renderEssayQuestions() {
-  const container = document.getElementById('essayContainer');
-  essayQuestions.forEach(question => {
-    const div = document.createElement('div');
-    div.className = 'essay';
-    
-    let answerLines = '';
-    for (let i = 0; i < 5; i++) {
-      answerLines += '<div class="answer-line"></div>';
+    if(selected){
+      answered++;
+      if(selected.value===q[2]) correct++;
+      else review.push({n:i+1,selected:selected.value,correct:q[2]});
     }
-    
-    div.innerHTML = `<strong>${question.id}. ${question.text}</strong>${answerLines}`;
-    container.appendChild(div);
   });
-}
+  const points=correct*2;
+  const essayAnswered=essays.filter((_,i)=>document.querySelector(`[name="essay${i}"]`).value.trim()).length;
+  const { error } = await supabaseClient
+  .from("exam_submissions")
+  .insert({
+    student_name: document.getElementById("name").value.trim(),
+    section: document.getElementById("section").value.trim(),
+    exam_date: document.getElementById("date").value,
+    mcq_score: points,
+    essay_answered: essayAnswered
+  });
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-  renderMCQuestions();
-  renderEssayQuestions();
-});
+if (error) {
+  console.error("Could not save exam result:", error);
+}
+  document.getElementById("submissionLoading").style.display="none";
+  document.getElementById("result").style.display="block";
+  document.getElementById("resultText").innerHTML=
+    `<div class="score">Part I: ${points} / 70</div>
+     <p><strong>Multiple-choice:</strong> ${correct} correct out of 35. ${answered} item(s) answered.</p>
+     <p><strong>Part II:</strong> ${essayAnswered} of 6 essay response(s) entered. These require instructor grading (5 points each).</p>
+     <p class="success">The final 100-point score should include the instructor's manually graded essay points.</p>`;
+  document.getElementById("review").innerHTML = review.length
+    ? `<h3>Items to Review</h3>${review.map(x=>`<div class="wrong">Item ${x.n}: your answer <strong>${x.selected}</strong> • correct answer <strong>${x.correct}</strong></div>`).join("")}`
+    : `<div class="correct">Excellent! All answered Part I items are correct.</div>`;
+  document.querySelector(".result-close").focus();
+}
+document.getElementById("examForm").addEventListener("submit",e=>{e.preventDefault();grade();});
+function closeResult(){
+  document.getElementById("result").style.display="none";
+  document.body.style.overflow="";
+}
+function resetExam(){
+  if(confirm("Reset all answers?")){
+    document.getElementById("examForm").reset();
+    closeResult();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+}
+function prepareExam(){
+  shuffleQuestions();
+  renderMCQ();
+  renderEssays();
+  document.getElementById("date").valueAsDate=new Date();
+  document.getElementById("loadingMessage").textContent="Your questions are ready. Good luck!";
+  const startButton=document.getElementById("startExam");
+  startButton.disabled=false;
+  startButton.textContent="Start Examination";
+  setTimeout(()=>{
+    document.getElementById("loadingScreen").style.display="none";
+    document.getElementById("welcomeScreen").style.display="grid";
+    startButton.focus();
+  },800);
+}
+function startExam(){
+  document.getElementById("welcomeScreen").style.display="none";
+  document.body.style.overflow="";
+  document.getElementById("name").focus();
+}
+document.getElementById("startExam").addEventListener("click",startExam);
+document.body.style.overflow="hidden";
+window.addEventListener("load",prepareExam,{once:true});
 </script>
 </body>
 </html>
