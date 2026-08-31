@@ -166,8 +166,8 @@ const supabaseClient = window.supabase.createClient(
 <header>
   <div class="header-inner">
     <div class="brand">STI COLLEGE</div>
-    <h1>2nd Year BSIT – Understanding-Type Examination</h1>
-    <p class="subtitle">C# Collections, Generics, Delegates and Events</p>
+    <h1>2nd Year BSIT – Short Examination</h1>
+    <p class="subtitle">Object-Oriented Programming: Methods, Static Members & Overloading Quiz</p>
   </div>
 </header>
 
@@ -186,7 +186,7 @@ const supabaseClient = window.supabase.createClient(
       <div class="section-title">Instructions</div>
       <div class="instructions">
         <strong>Part I:</strong> Choose the best answer. 35 items × 2 points = 70 points.<br>
-        <strong>Part II:</strong> Answer clearly using appropriate C# terminology and examples. 6 items × 5 points = 30 points.<br>
+        <strong>Part II:</strong> Answer clearly using appropriate Java OOP terminology and examples. 6 items × 5 points = 30 points.<br>
         <strong>Total:</strong> 100 points.
         <table class="grading-scale" aria-label="Personal grading scale">
           <thead>
@@ -230,45 +230,45 @@ const supabaseClient = window.supabase.createClient(
   </section>
 </main>
 
-<footer>3rd Year BSIT • C# Collections, Generics, Delegates and Events</footer>
+<footer>2nd Year BSIT • Object-Oriented Programming: Methods, Static Members & Overloading Quiz</footer>
 
 <script>
 const questions = [
-["A programmer wants to store a collection of student names where the number of students may increase or decrease while the program is running. Which collection is most appropriate based on the handout?",["Array","ArrayList","Stack","Queue"],"B"],
-["A program stores Student ID → Student Name and retrieves a student's name by specifying the ID. Which collection is most suitable?",["Stack","Queue","Hashtable","ArrayList"],"C"],
-["A programmer needs a collection that stores key-value pairs while keeping the keys sorted. Which collection should be considered?",["SortedList","Stack","Queue","ArrayList"],"A"],
-["Stack<string> actions contains Open, Edit, Save in that order using Push(). Which item is returned first by Pop()?",["Open","Edit","Save","All three items"],"C"],
-["A browser history feature needs to process the most recently added item first. Which collection behavior fits?",["FIFO","LIFO","Sorted access","Key-value access"],"B"],
-["A customer-service system processes customers in the order they arrive. Which collection best represents this behavior?",["Stack","Queue","Hashtable","SortedList"],"B"],
-["Queue<int> numbers contains 10, 20, 30 in that order. What does Peek() return?",["10","20","30","Nothing"],"A"],
-["Queue<int> numbers contains 10, 20, 30. After int x = numbers.Dequeue(); what is x?",["10","20","30","0"],"A"],
-["A developer wants a collection that stores integers and prevents accidentally adding a string into the same collection. Which is most appropriate?",["ArrayList","Hashtable","List ","List<objack>"],"C"],
-["Why are generic collections useful when developing applications?",["They eliminate variables.","They allow reusable code across different data types.","They automatically connect applications to databases.","They guarantee error-free programs."],"B"],
-["Which statement best describes List<T>?",["It is fixed-size.","It is dynamically allocated and can grow and shrink.","It only stores key-value pairs.","It always follows FIFO."],"B"],
-["List<string> names contains Anna, Ben, Carlo. Which accesses Ben?",["names[0]","names[1]","names[2]","names[\"Ben\"]"],"B"],
-["A list contains Anna, Ben, Carlo, Ben. After names.Remove(\"Ben\"), what happens?",["Both Ben entries are removed.","Only the first matching Ben is removed.","The entire list is removed.","Nothing is removed."],"B"],
-["A programmer wants to determine the position of Carlo in a List<string>. Which method is used?",["Sort()","Remove()","IndexOf()","ContainsValue()"],"C"],
-["If IndexOf() cannot find an element in a List<T>, what does it return?",["0","1","-1","null"],"C"],
-["A student wants to arrange the contents of a list into sorted order. Which method is used?",["Add()","Sort()","Remove()","IndexOf()"],"B"],
-["Which correctly compares Stack<T> and Queue<T>?",["Stack FIFO; Queue LIFO","Both FIFO","Stack LIFO; Queue FIFO","Both LIFO"],"C"],
-["Which operation adds an item to a Stack<T>?",["Enqueue","Dequeue","Push","Add"],"C"],
-["Which operation removes the item at the top of a Stack<T>?",["Pop","Peek","Push","Enqueue"],"A"],
-["What is the main difference between Peek() and Pop() on a stack?",["Peek removes; Pop adds.","Peek views without removing; Pop removes.","Both remove.","Both add."],"B"],
-["A developer wants a method reference that can point to another method when the signature matches. What C# feature should be used?",["Interface","Delegate","ArrayList","Hashtable"],"B"],
-["Which statement best describes a delegate?",["Stores only integers.","Encapsulates a method and holds a reference to a method.","Automatically creates a database connection.","Replaces every class."],"B"],
-["Given public delegate int MathOperation(int x, int y); which method could it reference?",["int Add(int x, int y)","void Add(int x, int y)","int Add(int x)","string Add(int x, int y)"],"A"],
-["Why must a referenced method have a matching signature?",["Delegate determines class name.","Delegate specifies expected return type and parameters.","Delegate changes parameters automatically.","Delegate only works with static methods."],"B"],
-["Which correctly creates a delegate referencing Formula.getSum?",["MathOperation op = new MathOperation(Formula.getSum);","MathOperation op = Formula.getSum();","MathOperation op = new Formula();","Formula op = MathOperation.getSum;"],"A"],
-["What is the main advantage of public delegate X DisplayOutput<X>(X arg)?",["Only integers.","It can reference methods using different data types while following the same pattern.","It removes methods.","It only references two-parameter methods."],"B"],
-["If X is double in DisplayOutput<double>, what method can it reference?",["A method returning double and receiving one double parameter","A method returning string and receiving one double parameter","A method returning double and receiving two int parameters","A void method with no parameters"],"A"],
-["Which best describes an event in C#?",["A collection that stores objects.","A class member fired when a specific action occurs.","Always a database operation.","A special array."],"B"],
-["A button click automatically runs a registered method. What concept is demonstrated?",["Event handling","Array indexing","Generic collection","Sorting"],"A"],
-["What is the role of an event handler?",["Stores objects.","The method invoked when an event occurs.","Creates a generic type.","Sorts an ArrayList."],"B"],
-["Before declaring an event, what should be declared first according to the handout?",["A queue","A delegate","An ArrayList","A constructor"],"B"],
-["An event uses a delegate that accepts two parameters. What should a registered method generally have?",["No parameters","One parameter","Two matching parameters","Three parameters"],"C"],
-["What is the purpose of eventName += delegateInstance;?",["Removes a subscription.","Registers/adds a delegate to the event.","Creates a class.","Sorts subscribers."],"B"],
-["Which accessors are involved in registering and unregistering event subscriptions?",["get and set","push and pop","add and remove","enqueue and dequeue"],"C"],
-["A programmer needs a mechanism that can reference methods from different classes as long as their signatures match. Which is the better fit?",["Delegate","ArrayList","Queue","SortedList"],"A"]
+  ["Which part of a method declaration specifies the type of value returned by the method?", ["Method body", "Return type", "Parameter list", "Method signature"], "B"],
+  ["Which access modifier makes a method visible to all classes everywhere?", ["Private", "Protected", "Public", "Package-private"], "C"],
+  ["What keyword is used when a method belongs to the class rather than an object?", ["final", "abstract", "static", "public"], "C"],
+  ["Which modifier prevents a method from being overridden by a subclass?", ["protected", "static", "private", "final"], "D"],
+  ["Which of the following is a valid method name according to Java naming conventions?", ["RunFast", "runFast", "RUNFAST", "run_fast"], "B"],
+  ["What is the purpose of a parameter list in a method declaration?", ["Stores the return value", "Holds input parameters", "Handles exceptions", "Specifies access control"], "B"],
+  ["Which part of a method declaration is enclosed in braces { }?", ["Parameter list", "Return type", "Method body", "Method signature"], "C"],
+  ["Which access level allows access only within the same package?", ["Public", "Protected", "Package-private", "Final"], "C"],
+  ["The protected modifier allows access within its package and by:", ["Any class", "Subclasses in another package", "Static methods only", "Constructors only"], "B"],
+  ["What is the return type of a method that does not return a value?", ["null", "empty", "static", "void"], "D"],
+  ["Which of the following is NOT an optional method specifier?", ["static", "abstract", "final", "return"], "D"],
+  ["What is a static variable also called?", ["Local variable", "Parameter variable", "Class variable", "Instance variable"], "C"],
+  ["How many copies of a static variable exist regardless of the number of objects created?", ["One per object", "One per method", "One only", "Unlimited"], "C"],
+  ["A static method can be invoked:", ["Only through an object", "Without creating an object", "Only inside constructors", "Only by subclasses"], "B"],
+  ["Which members can a static method directly access?", ["Instance members only", "Static members only", "Constructors only", "Local variables only"], "B"],
+  ["What is one main purpose of static methods?", ["Managing instance variables", "Creating constructors", "Utility or helper methods", "Hiding fields"], "C"],
+  ["Which statement correctly accesses a static variable named num in class NumberClass?", ["num.NumberClass", "NumberClass.num", "num()", "NumberClass()"], "B"],
+  ["What type of variable requires an object before it can be used?", ["Static variable", "Global variable", "Class variable", "Instance variable"], "D"],
+  ["An instance method is:", ["A method declared static", "A method that belongs to an object", "A method with no parameters", "A method with void return type"], "B"],
+  ["Can a static method directly access an instance variable?", ["Yes, always", "Only if public", "No", "Only if protected"], "C"],
+  ["Which can directly access a static variable?", ["Static methods", "Instance methods", "Both A and B", "Neither A nor B"], "C"],
+  ["Parameters are:", ["Actual values passed during method invocation", "Variables listed in a method declaration", "Variables declared in main()", "Return values"], "B"],
+  ["Arguments are:", ["Variables listed in a method declaration", "Exception objects", "Actual values passed to a method call", "Static fields"], "C"],
+  ["Java is considered what type of language in terms of parameter passing?", ["Pass-by-reference", "Pass-by-pointer", "Pass-by-address", "Pass-by-value"], "D"],
+  ["In Java pass-by-value, a method receives:", ["The original variable", "The memory address only", "A copy of the variable", "A static reference"], "C"],
+  ["A method signature consists of:", ["Return type and method name", "Method body and parameters", "Method name and parameter types", "Access modifier and return type"], "C"],
+  ["Method overloading occurs when methods:", ["Have different names only", "Have identical signatures", "Have the same name but different parameter lists", "Have different return types only"], "C"],
+  ["Overloaded methods are distinguished by:", ["Access modifiers", "Method body size", "Number and type of arguments", "Return type only"], "C"],
+  ["Which of the following is a valid overloaded method pair?", ["draw(int) and draw(String)", "draw(int) and draw(int)", "draw() and draw()", "draw(int) and draw(int) with different return types only"], "A"],
+  ["Can two methods have the same signature but different return types?", ["Always", "Sometimes", "Only if static", "No"], "D"],
+  ["What is autoboxing?", ["Converting objects into primitives manually", "Automatic conversion between primitives and wrapper classes", "Copying static variables", "Creating overloaded methods automatically"], "B"],
+  ["Which wrapper class corresponds to the primitive type int?", ["Double", "Long", "Integer", "Character"], "C"],
+  ["If only draw(Integer i) exists, what happens when draw(10) is called?", ["Compilation error", "Java performs autoboxing", "Java performs inheritance", "Nothing happens"], "B"],
+  ["If both draw(int i) and draw(Integer i) exist, what will draw(10) call?", ["draw(Integer i)", "Both methods", "draw(int i)", "Neither method"], "C"],
+  ["Which statement about overloaded methods is TRUE?", ["They must have different class names.", "They must have the same return type.", "They must have different method signatures.", "They must all be static."], "C"]
 ];
 
 const essays = [
