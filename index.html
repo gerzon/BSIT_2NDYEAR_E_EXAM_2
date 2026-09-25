@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSIT 2nd Year Object-Oriented Programming Online Examination</title>
+<title>BSIT 2101 Online Examination</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// Supabase connection settings used to save completed examination results.
 const SUPABASE_URL = "https://oqwehqvhhdvxjxugdukh.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xd2VocXZoaGR2eGp4dWdkdWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NTk3MzEsImV4cCI6MjEwMzIzNTczMX0.SidafkMBgTFj9wqqk8nuIYMNbfUpaYVa5WBJUvnYUl4";
 
@@ -17,6 +18,7 @@ const supabaseClient = window.supabase.createClient(
 </script>
 
 <style>
+  /* Theme colors and reusable page values. */
   :root{
     --sti-blue:#003b7a;
     --sti-blue-dark:#002b5c;
@@ -81,8 +83,34 @@ const supabaseClient = window.supabase.createClient(
   .grading-scale th,.grading-scale td{padding:9px 11px;border:1px solid #e2c75b;text-align:left}
   .grading-scale th{background:var(--sti-blue);color:#fff}
   .grading-scale tr:nth-child(even){background:#fffdf0}
+  /* Question and answer option styles. */
   .question{padding:18px 0;border-bottom:1px solid #e6ebf2}
   .question:last-child{border-bottom:0}
+  .question-modal{
+    display:none;position:fixed;inset:0;z-index:15;overflow-y:auto;
+    padding:28px 15px;background:rgba(0,43,92,.72)
+  }
+  .question-modal.open{display:block}
+  .question-dialog{
+    width:min(700px,100%);min-height:360px;margin:0 auto;background:#fff;
+    border:1px solid var(--border);border-radius:12px;padding:22px;
+    box-shadow:0 12px 35px rgba(0,0,0,.3)
+  }
+  .question-dialog-header{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin:-22px -22px 15px;padding:14px 18px;background:var(--sti-blue);
+    color:#fff;border-radius:12px 12px 0 0;border-bottom:4px solid var(--sti-yellow)
+  }
+  .question-progress{font-size:14px;font-weight:700}
+  .question-close{background:#e9eef5;color:#253247;padding:8px 13px;font-size:13px}
+  .question-dialog .question{display:block;border:0;padding:12px 0 20px}
+  .question-dialog .question[hidden]{display:none}
+  .question-navigation{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--border);padding-top:16px}
+  .question-navigation button{background:var(--sti-blue);color:#fff}
+  .question-navigation .previous{background:#e9eef5;color:#253247}
+  .question-launch{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .question-launch p{margin:0;color:#667085}
+  .open-questions{background:var(--sti-blue);color:#fff}
   .qtext{font-weight:700;margin-bottom:11px}
   .option{
     display:block;padding:9px 11px;margin:6px 0;border:1px solid transparent;
@@ -90,6 +118,7 @@ const supabaseClient = window.supabase.createClient(
   }
   .option:hover{background:#eef5ff;border-color:#c7d9f2}
   .option input{margin-right:9px}
+  /* Form controls and examination actions. */
   .essay textarea{min-height:150px;resize:vertical}
   .points{font-size:12px;color:#667085;font-weight:normal}
   .actions{display:flex;gap:10px;flex-wrap:wrap}
@@ -100,6 +129,7 @@ const supabaseClient = window.supabase.createClient(
   .submit{background:var(--sti-blue);color:#fff}
   .reset{background:#e9eef5;color:#253247}
   button:hover{opacity:.92}
+  /* Result dialog and answer review styles. */
   #result{
     display:none;position:fixed;inset:0;z-index:10;overflow-y:auto;
     margin:0;padding:28px 15px;background:rgba(0,43,92,.55)
@@ -119,6 +149,7 @@ const supabaseClient = window.supabase.createClient(
   .correct{background:#eefaf1;border-left:4px solid var(--success);padding:9px;margin:5px 0}
   .option.answer-correct{background:#eefaf1;border-color:var(--success)}
   .option.answer-wrong{background:#fff0f0;border-color:#c62828}
+  /* Loading, welcome, fullscreen, and page-leave overlays. */
   .loadingScreen{
     position:fixed;inset:0;z-index:30;display:grid;place-items:center;
     padding:20px;background:var(--sti-blue-dark);color:#fff
@@ -153,6 +184,7 @@ const supabaseClient = window.supabase.createClient(
   .welcome-dialog button{background:var(--sti-blue);color:#fff}
   .loading-message{color:#667085;font-size:14px}
   footer{text-align:center;padding:25px;color:#667085;font-size:13px}
+  /* Responsive layout adjustments for small screens. */
   @media(max-width:700px){
     .header-row{align-items:flex-start;flex-direction:column;gap:10px}
     .meta{grid-template-columns:1fr}
@@ -160,6 +192,7 @@ const supabaseClient = window.supabase.createClient(
     .card{padding:16px}
     .section-title{margin:-16px -16px 16px}
   }
+  /* Hide interactive controls when printing results. */
   @media print{
     .actions,#result{display:none!important}
     body{background:#fff}
@@ -169,18 +202,21 @@ const supabaseClient = window.supabase.createClient(
 </head>
 <body>
 <div class="topbar"></div>
+<!-- Initial loading state while questions are prepared. -->
 <section id="loadingScreen" class="loadingScreen" role="status" aria-live="polite">
   <div class="loading-dialog">
     <div class="loading-spinner" aria-hidden="true"></div>
     <p>Loading examination...</p>
   </div>
 </section>
+<!-- Loading state shown while the examination is being submitted. -->
 <section id="submissionLoading" class="loadingScreen" role="status" aria-live="polite">
   <div class="loading-dialog">
     <div class="loading-spinner" aria-hidden="true"></div>
     <p>Submitting your examination...</p>
   </div>
 </section>
+<!-- Welcome dialog used to start the examination. -->
 <section id="welcomeScreen" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
   <div class="welcome-dialog">
     <h2 id="welcomeTitle">Welcome to the Examination</h2>
@@ -188,6 +224,7 @@ const supabaseClient = window.supabase.createClient(
     <button id="startExam" type="button" disabled>Loading...</button>
   </div>
 </section>
+<!-- Fullscreen warning shown on supported non-iPhone devices. -->
 <section id="fullscreenScreen" role="dialog" aria-modal="true" aria-labelledby="fullscreenTitle">
   <div class="welcome-dialog">
     <h2 id="fullscreenTitle">Fullscreen Required</h2>
@@ -195,6 +232,7 @@ const supabaseClient = window.supabase.createClient(
     <button id="returnFullscreen" type="button">Return to Fullscreen</button>
   </div>
 </section>
+<!-- Page-leave warning shown when the active examination loses focus. -->
 <section id="pageLeaveScreen" role="dialog" aria-modal="true" aria-labelledby="pageLeaveTitle">
   <div class="welcome-dialog">
     <h2 id="pageLeaveTitle">Examination Paused</h2>
@@ -202,62 +240,89 @@ const supabaseClient = window.supabase.createClient(
     <button id="returnPage" type="button">Return to Examination</button>
   </div>
 </section>
+<!-- Site header and administrator navigation. -->
 <header>
   <div class="header-inner">
     <div class="header-row"><div class="brand">STI COLLEGE</div><a class="dashboard-link" href="admin_dashboard.html">Admin Dashboard</a></div>
-      <h1>BSIT 2nd Year Object-Oriented Programming Online Examination</h1>
-      <p class="subtitle">Java Methods, Access Control, Static Members, Parameters, Overloading and Autoboxing</p>
+    <h1>BSIT 2101 Online Examination</h1>
+    <p class="subtitle">Java OOP: Constructors, Encapsulation and Inheritance</p>
   </div>
 </header>
 
+<!-- Subject tabs switch between the BSIT 2101 and Mathematics examinations. -->
 <div class="subject-tabs" role="tablist" aria-label="Examination subjects">
-  <button class="tab-button active" type="button" data-tab="ict" role="tab" aria-selected="true" aria-controls="ict-panel" id="tab-ict">Object-Oriented Programming (JAVA)</button>
-  <button class="tab-button" type="button" data-tab="math" role="tab" aria-selected="false" aria-controls="math-panel" id="tab-math">Computer Programming 5 (JavaScript)</button>
+  <button class="tab-button active" type="button" data-tab="ict" role="tab" aria-selected="true" aria-controls="ict-panel" id="tab-ict">BSIT 2101</button>
+  <button class="tab-button" type="button" data-tab="math" role="tab" aria-selected="false" aria-controls="math-panel" id="tab-math">General Mathematics</button>
 </div>
 
+<!-- Main examination content. -->
 <main class="container">
   <div id="ict-panel" class="tab-panel active" role="tabpanel" aria-labelledby="tab-ict">
     <form id="examForm">
+      <!-- BSIT 2101 student information fields. -->
       <section class="card">
         <div class="section-title">Student Information</div>
         <div class="meta">
           <div><label for="name">Name</label><input id="name" type="text" placeholder="Enter your full name" required></div>
-          <div><label for="section">Section</label><input id="section" type="text" placeholder="Section" value="BSIT 2101 (Java)" disabled></div>
+          <div><label for="section">Section</label><input id="section" type="text" placeholder="Section" value="BSIT 2101" disabled></div>
           <div><label for="date">Date</label><input id="date" type="date" required></div>
         </div>
       </section>
 
+      <!-- BSIT 2101 examination instructions and grading scale. -->
       <section class="card">
         <div class="section-title">Instructions</div>
         <div class="instructions">
-          <strong>Multiple Choice:</strong> Choose the best answer. 40 items × 2 points = 80 points.<br>
-          <strong>Total:</strong> 80 points.
+          <strong>Multiple Choice:</strong> Choose the best answer. 50 items × 2 points = 100 points.<br>
+          <strong>Total:</strong> 100 points.
           <table class="grading-scale" aria-label="Personal grading scale">
             <thead>
               <tr><th>Score</th><th>Recording</th></tr>
             </thead>
             <tbody>
-              <tr><td>72 - 80</td><td>Will be recorded as 100 points</td></tr>
-              <tr><td>56 - 71</td><td>Actual score</td></tr>
-              <tr><td>55 &amp; below</td><td>Will be recorded as zero points</td></tr>
+              <tr><td>90 - 100</td><td>Will be recorded as 100 points</td></tr>
+              <tr><td>75 - 89</td><td>Actual score</td></tr>
+              <tr><td>74 &amp; below</td><td>Will be recorded as zero points</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
+      <!-- BSIT 2101 question launcher. Individual questions render in the modal below. -->
       <section class="card">
-        <div class="section-title">Multiple Choice <span class="points">(40 items × 2 points = 80 points)</span></div>
-        <div id="mcqContainer"></div>
+        <div class="section-title">Multiple Choice <span class="points">(50 items × 2 points = 100 points)</span></div>
+        <div class="question-launch">
+          <p>Answer each question in the examination window.</p>
+          <button id="openIctQuestions" class="open-questions" type="button">Open Questions</button>
+        </div>
       </section>
 
+      <!-- BSIT 2101 submission and reset actions. -->
       <section class="card">
         <div class="actions">
           <button id="submitButton" class="submit" type="submit">Submit Examination</button>
           <button class="reset" type="button" onclick="resetExam()">Reset Answers</button>
         </div>
       </section>
+
+    <!-- BSIT 2101 one-question-at-a-time modal. -->
+    <section id="ictQuestionModal" class="question-modal" role="dialog" aria-modal="true" aria-labelledby="ictQuestionModalTitle">
+      <div class="question-dialog">
+        <div class="question-dialog-header">
+          <strong id="ictQuestionModalTitle">BSIT 2101 Question</strong>
+          <span id="ictQuestionProgress" class="question-progress"></span>
+          <button class="question-close" type="button" data-close-question-modal="ictQuestionModal">Back to Exam</button>
+        </div>
+        <div id="mcqContainer"></div>
+        <div class="question-navigation">
+          <button id="ictPreviousQuestion" class="previous" type="button">Previous</button>
+          <button id="ictNextQuestion" type="button">Next</button>
+        </div>
+      </div>
+    </section>
     </form>
 
+    <!-- BSIT 2101 score and answer review dialog. -->
     <section id="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
       <div class="result-dialog">
         <button class="result-close" type="button" onclick="closeResult()" aria-label="Close examination result">Close</button>
@@ -270,46 +335,70 @@ const supabaseClient = window.supabase.createClient(
 
   <div id="math-panel" class="tab-panel" role="tabpanel" aria-labelledby="tab-math" hidden>
     <form id="mathExamForm">
+      <!-- Mathematics student information fields. -->
       <section class="card">
         <div class="section-title">Student Information</div>
         <div class="meta">
           <div><label for="mathName">Name</label><input id="mathName" type="text" placeholder="Enter your full name" required></div>
-          <div><label for="mathSection">Section</label><input id="mathSection" type="text" placeholder="Section" value="TVL-ICT 2101 (JavaScript)" disabled></div>
+          <div><label for="mathSection">Section</label><input id="mathSection" type="text" placeholder="Section" value="STEM - General Math" disabled></div>
           <div><label for="mathDate">Date</label><input id="mathDate" type="date" required></div>
         </div>
       </section>
 
+      <!-- Mathematics examination instructions and grading scale. -->
       <section class="card">
         <div class="section-title">Instructions</div>
         <div class="instructions">
-          <strong>Multiple Choice:</strong> Choose the best answer. 60 items × 2 points = 120 points.<br>
-          <strong>Total:</strong> 120 points.
-          <table class="grading-scale" aria-label="JavaScript grading scale">
+          <strong>Multiple Choice:</strong> Choose the best answer. 10 items × 2 points = 20 points.<br>
+          <strong>Total:</strong> 20 points.
+          <table class="grading-scale" aria-label="Mathematics grading scale">
             <thead>
               <tr><th>Score</th><th>Recording</th></tr>
             </thead>
             <tbody>
-              <tr><td>108 - 120</td><td>Will be recorded as 100 points</td></tr>
-              <tr><td>84 - 107</td><td>Actual score</td></tr>
-              <tr><td>83 &amp; below</td><td>Will be recorded as zero points</td></tr>
+              <tr><td>18 - 20</td><td>Excellent</td></tr>
+              <tr><td>14 - 17</td><td>Proficient</td></tr>
+              <tr><td>13 &amp; below</td><td>Needs review</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
+      <!-- Mathematics question launcher. Individual questions render in the modal below. -->
       <section class="card">
-        <div class="section-title">Multiple Choice <span class="points">(60 items × 2 points = 120 points)</span></div>
-        <div id="mathMcqContainer"></div>
+        <div class="section-title">Multiple Choice <span class="points">(10 items × 2 points = 20 points)</span></div>
+        <div class="question-launch">
+          <p>Answer each question in the examination window.</p>
+          <button id="openMathQuestions" class="open-questions" type="button">Open Questions</button>
+        </div>
       </section>
 
+      <!-- Mathematics submission and reset actions. -->
       <section class="card">
         <div class="actions">
           <button id="mathSubmitButton" class="submit" type="submit">Submit Examination</button>
           <button class="reset" type="button" onclick="resetMathExam()">Reset Answers</button>
         </div>
       </section>
+
+    <!-- Mathematics one-question-at-a-time modal. -->
+    <section id="mathQuestionModal" class="question-modal" role="dialog" aria-modal="true" aria-labelledby="mathQuestionModalTitle">
+      <div class="question-dialog">
+        <div class="question-dialog-header">
+          <strong id="mathQuestionModalTitle">Mathematics Question</strong>
+          <span id="mathQuestionProgress" class="question-progress"></span>
+          <button class="question-close" type="button" data-close-question-modal="mathQuestionModal">Back to Exam</button>
+        </div>
+        <div id="mathMcqContainer"></div>
+        <div class="question-navigation">
+          <button id="mathPreviousQuestion" class="previous" type="button">Previous</button>
+          <button id="mathNextQuestion" type="button">Next</button>
+        </div>
+      </div>
+    </section>
     </form>
 
+    <!-- Mathematics score and answer review dialog. -->
     <section id="mathResult" role="dialog" aria-modal="true" aria-labelledby="mathResultTitle" style="display:none;position:fixed;inset:0;z-index:10;overflow-y:auto;margin:0;padding:28px 15px;background:rgba(0,43,92,.55)">
       <div class="result-dialog">
         <button class="result-close" type="button" onclick="closeResult('mathResult')" aria-label="Close mathematics result">Close</button>
@@ -321,189 +410,125 @@ const supabaseClient = window.supabase.createClient(
   </div>
 </main>
 
-<footer>Object-Oriented Programming • Java Methods and Object-Oriented Programming | Computer Programming 5 • JavaScript, jQuery &amp; DOM</footer>
+<!-- Site footer. -->
+<footer>BSIT 2101 Online Examination - Java OOP</footer>
 
 <script>
-const legacyQuestions = [
-["Which component of the .NET Framework manages code execution and provides core services like memory management?",["Class Library","Common Language Runtime (CLR)","Application Framework","Visual Studio IDE"],"B","The CLR manages execution and core runtime services."],
-["Which character is allowed as the starting character of a C# identifier besides letters?",["Hyphen (-)","Dollar sign ($)","Underscore (_)","Ampersand (&)"],"C","An underscore may begin a C# identifier."],
-["Which method prints text to the console and automatically moves the cursor to the next line?",["Console.Write()","Console.Read()","Console.WriteLine()","Console.OutputLine()"],"C","Console.WriteLine prints text followed by a line break."],
-["Which conversion method in .NET converts a string input specifically into a 32-bit integer?",["Convert.ToInt16","Convert.ToInt32","Convert.ToInt64","Convert.ToDouble"],"B","Convert.ToInt32 converts a value to a 32-bit integer."],
-["What requirement must be met when declaring an implicitly-typed variable using the var keyword?",["It must be declared as static.","It must be a global variable.","It must be initialized with a value upon declaration.","It must be placed inside a struct."],"C","A var variable requires an initializer so its type can be inferred."],
-["Which modifier is used to declare a variable whose value cannot be changed after initial assignment?",["static","readonly","const","fixed"],"C","The const modifier declares a compile-time constant."],
-["What is the operator priority (precedence rank) assigned to addition (+) and subtraction (-)?",["Priority 1","Priority 2","Priority 3","Priority 4"],"B","Addition and subtraction share the stated priority rank 2."],
-["Which group of operators holds the highest precedence rank among arithmetic operators?",["Addition (+), Subtraction (-)","Multiplication (*), Division (/), Modulus (%)","Assignment (=, +=)","Relational operators (>, <)"],"B","Multiplication, division, and modulus precede addition and subtraction."],
-["What is the result of the expression 14 % 4 in C#?",["3","2","3.5","0"],"B","The remainder when 14 is divided by 4 is 2."],
-["Which relational operator checks if two values are equal?",["=","==","!=","<="],"B","The equality operator is ==."],
-["What happens if a break statement is omitted from a matching case block inside a switch statement?",["A runtime exception is thrown immediately.","Execution falls through to all subsequent case statements.","The program terminates automatically.","The program loops infinitely."],"B","Without break, execution can fall through subsequent case labels."],
-["Which optional case inside a switch statement is executed when no other case label matches?",["else","final","default","break"],"C","The default label handles unmatched switch values."],
-["How many times is a do-while loop guaranteed to execute its code block?",["Zero times","At least one time","Exactly two times","Indefinitely until user cancels"],"B","A do-while checks its condition after the first execution."],
-["What is the fundamental difference between break and continue statements in loop bodies?",["break pauses the loop; continue restarts the program.","break terminates the loop entirely; continue skips only the current iteration.","continue exits the loop; break repeats the iteration.","Both statements perform identical operations."],"B","break exits the loop, while continue advances to the next iteration."],
-["Which logical operator returns true if and only if ALL operands evaluate to true?",["||","&&","!","^"],"B","The logical AND operator requires all operands to be true."],
-["In the conditional expression expr1 ? expr2 : expr3, which expression is evaluated if expr1 is false?",["expr1","expr2","expr3","Both expr2 and expr3"],"C","The false branch is expr3."],
-["Which advantage of using methods allows modifications to be isolated so they do not affect other program parts?",["Recursion","Input Versatility","Modifiability","Overloading"],"C","Methods support modifiability by isolating changes."],
-["How are named arguments passed to a method call statement?",["Using position index numbers","Using parameter name followed by a colon : and the value","Using ampersands & before each variable","Enclosing values inside curly braces {}"],"B","Named arguments use the parameter name followed by a colon."],
-["Which method of passing arguments copies an argument's memory address into the parameter using the ref keyword?",["By value","By reference","By output","By constant"],"B","The ref keyword passes an argument by reference."],
-["What is method overloading in C#?",["Calling a method recursively until an exception occurs","Declaring multiple methods with the same name but different parameters","Inheriting a method from a derived class into a base class","Overriding a virtual method in an abstract class"],"B","Overloading uses the same method name with different parameter signatures."],
-["In recursive methods, what contains the base case that prevents infinite recursive calls?",["Recursive step","Exit condition","Constructor method","Destructor block"],"B","The exit condition defines the base case."],
-["Where are value types stored in memory during runtime execution?",["Heap","Stack","Disk storage","External cache"],"B","Value types are generally stored on the stack when local."],
-["When a reference type object is instantiated, what is stored directly on the stack?",["The complete object contents","The heap memory address of the object","The source code definition","The compiler instructions"],"B","The stack holds a reference to the object on the heap."],
-["Which access modifier restricts member access solely to its containing class and derived classes?",["public","private","protected","internal"],"C","protected permits access in the containing and derived classes."],
-["Which characteristic is true regarding constructor methods in C#?",["They have a return type of void.","They have exactly the same name as their parent class.","They are declared using the destruct keyword.","They cannot accept parameters."],"B","A constructor has the same name as its class and no return type."],
-["What are the two special accessors that can be defined within property declarations?",["read and write","get and set","push and pop","load and store"],"B","C# properties commonly define get and set accessors."],
-["Which indexing rule do arrays follow in C#?",["One-indexing (starts at 1)","Zero-indexing (starts at 0)","Dynamic indexing (starts at user choice)","Negative indexing (starts at -1)"],"B","C# array indexes begin at zero."],
-["Which loop statement provides a concise way to iterate through all items in an array without using an explicit counter variable?",["while","do-while","foreach","for-in"],"C","foreach iterates through each item without an explicit counter."],
-["Which array property returns the total number of elements contained in an array?",["Rank","Length","Size","Count"],"B","The Length property returns the number of array elements."],
-["Which String property-method inserts a value into a string starting at a specified index position?",["Insert(index, value)","Concat(index, value)","Append(index, value)","Substring(index, value)"],"A","String.Insert adds text at the specified index."],
-["Which String property-method returns a Boolean value true if a string contains a specified target value?",["IndexOf(value)","Contains(value)","HasValue(value)","Matches(value)"],"B","String.Contains returns whether the target occurs."],
-["What term is used for a parent class whose members and features are inherited by a derived class?",["Superclass","Base class","Abstract interface","Concrete class"],"B","The inherited parent is called the base class."],
-["Which access modifier prevents a class from being inherited by any other class?",["static","sealed","abstract","private"],"B","A sealed class cannot be inherited."],
-["What symbol prefixes the class identifier when declaring a destructor method in C#?",["Exclamation mark (!)","Tilde (~)","Asterisk (*)","Hash (#)"],"B","A C# destructor is prefixed with a tilde."],
-["Which keyword is used in a base class method declaration to indicate that it can be overridden in derived classes?",["override","virtual","abstract","new"],"B","The virtual keyword allows derived classes to override a method."],
-["What is a primary feature of an abstract class in C#?",["It can be directly instantiated with the new keyword.","It cannot be instantiated and may contain abstract methods without bodies.","All of its methods must be sealed.","It cannot serve as a base class."],"B","Abstract classes cannot be instantiated and may declare abstract members."],
-["Which members CANNOT be contained inside an interface declaration?",["Properties","Methods","Fields (variables)","Indexers"],"C","Interfaces do not contain instance fields."],
-["What default access modifier applies to all members declared inside an interface?",["private","protected","public","internal"],"C","Interface members are public by default."],
-["What is a nested class?",["A class derived from an abstract interface","A class declared as a member inside another class","A static class that cannot contain static members","A class containing only destructors"],"B","A nested class is declared inside another class."],
-["Which pair of keywords is used to define and consume custom namespaces in C#?",["using and namespace","import and package","include and module","require and space"],"A","namespace declares a namespace and using references it."],
-["How many destructors can be defined for a single class in C#?",["Zero","Exactly one (1)","Unlimited","Up to two (2)"],"B","A class can have only one destructor."],
-["What limitation applies to static methods within a class?",["They cannot accept arguments.","They can only access static members.","They must return an integer value.","They cannot be called from Main()."],"B","Static methods cannot directly access instance members."],
-["When is a static constructor automatically called?",["Every time an object is instantiated","Once, when a static member of the class is accessed","When the program finishes execution","Whenever a destructor is invoked"],"B","The static constructor runs automatically once before static use."],
-["Which static method of the Math class returns a specified number raised to a specified power?",["Math.Sqrt()","Math.Pow()","Math.Abs()","Math.Round()"],"B","Math.Pow calculates a number raised to a power."],
-["Which method of the static Array class sorts array elements in ascending order?",["Array.Order()","Array.Sort()","Array.Reverse()","Array.Arrange()"],"B","Array.Sort sorts array elements."],
-["Which static property of the DateTime class returns the current date and time from the system clock?",["DateTime.Today","DateTime.Now","DateTime.Current","DateTime.SystemClock"],"B","DateTime.Now returns the current local date and time."],
-["What does the this keyword refer to inside a class implementation?",["The current instance/object of the class","The base parent class","The global namespace","The static entry point method"],"A","this refers to the current object instance."],
-["What is a key difference between readonly members and const members?",["readonly members can have values assigned or changed inside a constructor.","const members can be declared without initialized values.","const members can hold evaluation values.","readonly members are implicitly static by definition."],"A","readonly fields may be assigned in a constructor; const fields must be compile-time initialized."],
-["Which C# feature allows objects to be indexed in the same manner as array elements using square brackets []?",["Indexers","Auto-properties","Structs","Enumerations"],"A","Indexers provide bracket-based access to class objects."],
-["Overloaded operator methods must always be declared with which access modifier?",["private","static","virtual","abstract"],"B","Overloaded operators are declared static."],
-["Which keyword is used to declare value types that encapsulate small groups of related variables?",["class","struct","enum","interface"],"B","struct declares a value type."],
-["What constructor restriction applies specifically to struct declarations?",["Structs cannot contain constructors with parameters.","Structs cannot contain default parameterless constructors.","Struct constructors must be private.","Struct constructors must return a value."],"B","The stated restriction is that structs cannot contain default parameterless constructors."],
-["Which keyword is used to declare a specialized type containing a named list of integral constants?",["list","enum","struct","array"],"B","enum declares named integral constants."],
-["When an enum element's index value is manually assigned, what value is automatically assigned to the subsequent unassigned enum item?",["Zero","One increment above the previous element's value","Double the previous value","It results in a syntax error"],"B","The next unassigned enum member increments the previous value by one."],
-["In exception handling, which code block encloses statements that might throw or generate an exception?",["catch","try","finally","throw"],"B","Potentially failing statements belong in a try block."],
-["Which exception type is thrown when an invalid index is used to access an element of an array?",["FileNotFoundException","FormatException","IndexOutOfRangeException","InvalidOperationException"],"C","Invalid indexes throw IndexOutOfRangeException."],
-["What is the primary purpose of the optional finally block in exception handling?",["To execute code regardless of whether an exception was thrown or caught","To catch specific runtime arithmetic exceptions","To suppress all errors and prevent compilation","To restart program execution from Main()"],"A","finally runs whether or not an exception occurs."],
-["Which method of the System.IO.File class creates a file and writes content to it, overwriting it if it already exists?",["File.AppendAllText()","File.WriteAllText()","File.ReadAllText()","File.Copy()"],"B","File.WriteAllText creates or overwrites a text file."],
-["Which File class method returns a Boolean value indicating whether a file exists at a specified path?",["File.HasFile()","File.Exists()","File.Check()","File.Open()"],"B","File.Exists returns true when the path exists."],
-["Which method of the System.IO.File class relocates a file from a specified location to a new target directory or location?",["File.Copy()","File.Move()","File.Transfer()","File.Replace()"],"B","File.Move relocates a file."]
-];
-
+// BSIT 2101 question bank: Java OOP constructors, encapsulation and inheritance.
 const questions = [
-["Which part of a Java method declaration specifies whether other classes can use a field or invoke a method?",["Optional specifier","Access modifier","Return type","Parameter list"],"B","An access modifier controls whether other classes can access a field or invoke a method."],
-["Which of the following components of a method declaration is REQUIRED?",["Access modifier","Optional specifier","Return type","Exception list"],"C","A method declaration requires a return type, method name, parameter list, and body."],
-["Which optional specifier is used when a method is NOT allowed to be overridden by a subclass?",["static","final","abstract","public"],"B","The final specifier prevents a method from being overridden."],
-["What keyword is used in place of a return type when a method does NOT return any value?",["null","void","empty","static"],"B","The void return type indicates that a method does not return a value."],
-["According to Java naming conventions, how should a multi-word method name be styled?",["Start with a capital letter (e.g., RunFast)","Start with a lowercase verb, followed by camelCase (e.g., runFast)","All uppercase separated by underscores (e.g., RUN_FAST)","All lowercase separated by hyphens (e.g., run-fast)"],"B","Method names conventionally start with a lowercase verb and use camelCase."],
-["Given the method header public final void nap(int minutes) throws Exception, what is the method name?",["public","final","nap","Exception"],"C","The method name is nap."],
-["Which access level applies when no access modifier is explicitly declared for a member or top-level class?",["public","protected","package-private","private"],"C","No modifier gives package-private access."],
-["Which access modifier allows a class member to be accessed only within its own package and by subclasses in other packages?",["public","protected","package-private","private"],"B","The protected modifier permits package access and subclass access."],
-["Which access modifier restricts access strictly to within the method's own class?",["private","package-private","protected","public"],"A","The private modifier restricts access to the declaring class."],
-["Which of the following is true regarding top-level access control levels in Java?",["Top-level classes can be private or protected","Top-level classes can only be public or package-private","Top-level classes must always be static","Top-level classes cannot have package-private access"],"B","Top-level classes may be public or package-private."],
-["What is the method body enclosed between in Java?",["Parentheses ()","Brackets []","Braces {}","Angle brackets <>"],"C","A method body is enclosed in braces."],
-["Can a Java method declaration have an empty parameter list () and an empty method body {}?",["No, both must contain content","Parameter list can be empty, but body cannot","Body can be empty, but parameter list cannot","Yes, both parameter list and body can be empty"],"D","Both an empty parameter list and an empty body are valid."],
-["Which specifier is used when a method does NOT have a body?",["static","abstract","final","void"],"B","An abstract method is declared without a body."],
-["How many copies of a static variable exist in memory regardless of how many times the class is instantiated?",["Zero","Exactly one (1)","One copy per object instance","It depends on garbage collection"],"B","A static variable has one shared copy per class."],
-["A static method belongs to which of the following?",["The object instance","The class itself","The package header","The interface implementation"],"B","A static method belongs to the class."],
-["What is the main characteristic of a static variable regarding instance sharing?",["Each instance gets a private copy of the variable","It is reinitialized every time a new instance is created","It is shared among all instances of the class","It can only be modified inside constructors"],"C","All instances share the same static variable."],
-["How can a static method be invoked?",["Only after creating an instance of the class","Without creating an instance of a class","Only from another class in a different package","Only via interface implementation"],"B","A static method can be called without an object."],
-["Standard practice recommends calling a static method or variable by placing what before the method or variable name?",["The object reference variable","The class name","The keyword this","The keyword super"],"B","The class name is the standard qualifier for static members."],
-["Can a static method directly call an instance method without an object reference?",["Yes, using the class name","Yes, directly by method name","No, it causes a compilation error","Yes, if the instance method is public"],"C","An object reference is required to call an instance method from static context."],
-["Can a static method directly access an instance variable without an object reference?",["Yes","No","Only if the variable is final","Only if the variable is public"],"B","An object reference is required to access an instance variable from static context."],
-["Can an instance method access a static method or variable?",["Yes","No","Only if declared in the main method","Only through reflection"],"A","Instance methods can access static members."],
-["What is an instance variable or method?",["Any field or method declared with static","Any variable or method that is non-static","Any method that returns void","Any variable declared inside a loop"],"B","An instance member is non-static."],
-["Where is an instance variable declared?",["Inside a static method","Inside a constructor parameter list","Outside any method, constructor, or block","Inside a local code block"],"C","Instance fields are declared at class level, outside methods and blocks."],
-["What happens when two separate object instances (obj1, obj2) modify a static counter variable count initialized to 0, if obj1 calls increment() and then obj2 calls increment()?",["obj1 sees count as 1, obj2 sees count as 1","obj1 sees count as 1, obj2 sees count as 2, and obj1 also sees 2","Compilation error occurs","Both objects see count reset to 0"],"B","Both objects observe the same shared static counter."],
-["What are the two primary purposes of static methods?",["For memory allocation and garbage collection","For utility/helper methods and for state shared by all instances","For method overriding and inheritance","For encapsulation and data hiding"],"B","Static members support utilities and state shared across instances."],
-["Consider this code: public static int num = 0; NumberClass.num = 4; NumberClass nc1 = new NumberClass(); NumberClass nc2 = new NumberClass(); nc1.num = 6; nc2.num = 5; What is printed by System.out.print(NumberClass.num) at the end?",["4","6","5","0"],"C","Both object assignments refer to the one static variable, so the final value is 5."],
-["What are the variables listed in a method declaration called?",["Arguments","Parameters","Local variables","Instance fields"],"B","Parameters are the variables in a method declaration."],
-["What are the actual values passed into a method when it is invoked called?",["Arguments","Parameters","Return values","Signatures"],"A","Arguments are the values supplied at invocation."],
-["Java is described as what type of argument-passing language?",["Pass-by-reference","Pass-by-value","Pass-by-name","Pass-by-pointer"],"B","Java passes arguments by value."],
-["What does pass-by-value mean in Java?",["The exact memory location is shared with the method","A copy of the variable is made, and the method receives that copy","Changes in the method directly overwrite caller variables","Only primitive types can be passed"],"B","The called method receives a copy of the value."],
-["What will be printed by the following code? int num = 1; newNumber(2); System.out.println(num); where newNumber(int num) assigns num = 3;",["3","2","1","0"],"C","Changing the parameter does not change main's separate variable."],
-["What two components constitute a method signature in Java?",["Method name and return type","Method name and parameter types","Access modifier and method name","Parameter types and return type"],"B","A signature consists of the method name and parameter types."],
-["What is the method signature of public double computeSalePrice(double origPrice, double discountRate)?",["double computeSalePrice(double, double)","computeSalePrice(double, double)","computeSalePrice(origPrice, discountRate)","public computeSalePrice(double origPrice, double discountRate)"],"B","Return type, modifiers, and parameter names are excluded from the signature."],
-["Method overloading occurs when:",["Methods have different names but identical parameters","Methods have the same name but different type parameters/signatures","Methods have the same signature but different return types","A subclass overrides a parent class method"],"B","Overloads share a name but differ in parameter signatures."],
-["Overloaded methods are differentiated by which characteristics of their arguments?",["Names and return types","Number and type of arguments","Access modifiers and specifiers","Exception lists"],"B","The number and types of parameters distinguish overloads."],
-["What happens if you try to declare two methods in the same class with identical signatures but different return types?",["It compiles successfully","The compiler selects the method returning void","It results in a compilation error (does not compile)","It results in a runtime exception"],"C","Return type alone cannot distinguish methods."],
-["What is autoboxing in Java?",["Manual conversion of objects to primitives","Automatic conversion between primitive types and their object wrapper classes","Automatic casting of int to double","Packaging multiple parameters into an array"],"B","Autoboxing converts a primitive to its wrapper object automatically."],
-["Given a class containing only public void draw(Integer i), what will calling draw(10); output?",["Compilation Error","Integer (via Autoboxing)","int","Runtime Exception"],"B","The int literal is autoboxed to Integer."],
-["Given a class with both public void draw(Integer i) and public void draw(int i), what will calling draw(10); output?",["Integer","int","Ambiguous method call compiler error","NullPointerException"],"B","Java chooses the exact primitive int overload."],
-["Why does Java NOT perform autoboxing when both primitive type int and wrapper Integer method versions are available for draw(10)?",["Autoboxing is disabled by default in Java","Primitive version is present, so boxing is not needed","Integer parameters cannot accept literal values","It always chooses object wrapper types over primitives"],"B","The exact primitive overload is preferred over boxing."],
-];
-
+["What fundamental OOP concept allows a class to acquire attributes and behaviors from another class?",["Encapsulation","Polymorphism","Inheritance","Abstraction"],"C","Inheritance allows a class to acquire attributes and behaviors from another class."],
+["Which term refers to a class that is derived from another class?",["Superclass","Subclass","Child class","Base class"],"B","A class derived from another class is a subclass."],
+["What is another commonly used term for a superclass?",["Derived class","Base class","Extended class","Parent class"],"D","A superclass is also called a parent class."],
+["Which keyword is used in Java to implement inheritance between classes?",["inherits","implements","extends","super"],"C","The extends keyword establishes class inheritance."],
+["What type of inheritance hierarchy does Java support for classes?",["Multiple inheritance","Single inheritance","Dual inheritance","Cyclic inheritance"],"B","A Java class can directly extend only one class."],
+["Which top-level Java class is the ultimate ancestor of all other classes?",["java.lang.Class","java.lang.Object","java.lang.System","java.lang.Root"],"B","java.lang.Object is the root class of Java's class hierarchy."],
+["Which class is the only class in Java that does NOT have any parent class?",["Object","String","Main","Class"],"A","Object is the root class and has no parent class."],
+["If a class declaration does not explicitly use the extends keyword, which class does it invisibly extend?",["java.lang.String","java.lang.Object","java.util.Base","None"],"B","Every class without an explicit superclass implicitly extends Object."],
+["What modifier is placed before a class declaration to prevent it from being extended?",["static","abstract","final","private"],"C","A final class cannot be extended."],
+["How does a subclass access a private field declared in its superclass directly?",["Using the super keyword","Using the this keyword","It cannot access it directly","By casting to the parent"],"C","Private superclass fields are not directly accessible in subclasses."],
+["What condition allows a subclass to access a parent class without using an import statement?",["If both are public","If both are in the same package","If superclass is final","Import is always required"],"B","Classes in the same package can refer to one another without an import."],
+["In the statement public class Student extends Person, which class is the child class?",["Person","Student","Object","String"],"B","Student extends Person, so Student is the child class."],
+["Which of the following class declarations is illegal in Java?",["class A extends B","class A extends B, C","class A extends Object","final class A"],"B","Java does not support extending multiple classes."],
+["What structural element is primarily used during the creation of an object instance using the new keyword?",["Method","Constructor","Variable","Interface"],"B","A constructor initializes an object when it is created."],
+["What is the return type specified in a constructor declaration?",["void","Object","Same as class","No return type"],"D","Constructors do not declare a return type."],
+["What rule governs the naming of a constructor in Java?",["Must start with set","Must match the class name exactly","Must be init()","Can be any valid identifier"],"B","A constructor name must exactly match its class name."],
+["Are constructors inherited by child classes from parent classes?",["Yes, always","Yes, if public","No, never","Yes, if protected"],"C","Constructors are not inherited by child classes."],
+["What does Java automatically provide when no constructors are explicitly written in a class?",["Static constructor","Default no-argument constructor","Private constructor","Copy constructor"],"B","The compiler supplies a default no-argument constructor."],
+["What is contained in the parameter list of a compiler-generated default constructor?",["String args[]","Empty parameter list","Object self","int index"],"B","A default constructor has no parameters."],
+["What keyword resolves ambiguity when a constructor parameter has the exact same name as an instance variable?",["super","this","self","static"],"B","this distinguishes the instance variable from the parameter."],
+["What feature allows a class to have multiple constructors with different parameter signatures?",["Constructor Overriding","Constructor Overloading","Constructor Hiding","Constructor Shadowing"],"B","Multiple constructor signatures are constructor overloading."],
+["What term describes the process of one constructor calling another constructor within the same class?",["Method Overriding","Constructor Chaining","Super Invocation","Dynamic Binding"],"B","A constructor calling another constructor is constructor chaining."],
+["Which statement is used to call another constructor in the same class?",["this()","super()","new Self()","this.init()"],"A","this() invokes another constructor in the same class."],
+["What position must a this() or super() call occupy inside a constructor body?",["Any line","Last statement","First statement","Inside a try block"],"C","A constructor invocation must be the first statement."],
+["What statement is automatically inserted as the first line of a constructor if neither this() nor super() is declared?",["super();","this();","return;","System.exit(0);"],"A","Java implicitly inserts a call to super()."],
+["In an inheritance chain (Person -> Student -> FirstYear), in what sequence are constructors executed?",["FirstYear -> Student -> Person","Student -> Person -> FirstYear","Person -> Student -> FirstYear","Random order"],"C","Superclass constructors execute before subclass constructors."],
+["What happens if a parent class lacks a no-argument constructor, and the child constructor does not explicitly call super(...)?",["Code runs normally","Compilation error","Runtime exception","Null pointer warning"],"B","The compiler cannot insert a valid implicit super() call."],
+["Which keyword is used in a subclass to explicitly invoke a constructor of its parent class?",["super","parent","base","this"],"A","super invokes a superclass constructor."],
+["What occurs if super() is placed as the second line in a constructor definition?",["Executes second","Compilation error","Warning issued","Ignored by compiler"],"B","super() must be the first statement."],
+["Defining a new version of an existing superclass method in a subclass with the exact same signature is known as:",["Method Overloading","Method Overriding","Method Hiding","Method Shadowing"],"B","Replacing an inherited method with the same signature is overriding."],
+["Which requirement must be met by parameter lists during method overriding?",["Must be different","Must be identical","Child needs more params","Parent needs more params"],"B","Overriding requires the same parameter list."],
+["How must the accessibility of an overriding method in a subclass compare to the method in the parent class?",["Must be more restrictive","Must be private","At least as accessible","Accessibility does not matter"],"C","An overriding method cannot reduce accessibility."],
+["If a superclass method has protected access, what access modifier(s) can the overriding child method use?",["Only private","Protected or public","Only package-private","Only protected"],"B","The child method may retain protected or increase access to public."],
+["Which keyword allows an overriding method in a subclass to access the parent's original method implementation?",["super","base","this","parent"],"A","super calls the superclass implementation."],
+["What is the return type requirement when overriding a method in a child class?",["Must be void","Must be identical (or covariant)","Must be int","Can be any type"],"B","The return type must match or be covariant."],
+["What error occurs if a child class defines public Student() { System.out.println(\"A\"); super(); }?",["No error","Constructor call must be first","Invalid method name","Stack Overflow"],"B","A super() call must appear before any other constructor statement."],
+["If class Person has only public Person(String n), what statement MUST appear in public Student()?",["super();","super(\"someName\");","this();","Person();"],"B","The child must explicitly call the available superclass constructor."],
+["Can a subclass override a method that is marked with the final modifier in the superclass?",["Yes, always","No, final methods cannot be overridden","Yes, if public","Yes, using super"],"B","Final methods cannot be overridden."],
+["What core OOP principle describes an object's ability to hide its internal data and implementation details?",["Encapsulation","Polymorphism","Inheritance","Abstraction"],"A","Encapsulation bundles data and operations while restricting direct access."],
+["In standard Java encapsulation practices, how should instance variables (fields) be declared?",["public","protected","private","static"],"C","Private fields enforce controlled access through methods."],
+["What type of method is used to retrieve data from a private instance variable?",["Mutator method","Accessor method","Constructor","Destructor"],"B","An accessor reads a field value."],
+["What is another commonly used term for an accessor method?",["Setter","Getter","Builder","Modifier"],"B","An accessor is commonly called a getter."],
+["What type of method is used to modify or change the data stored in a private instance variable?",["Accessor method","Mutator method","Static method","Getter method"],"B","A mutator changes a field value."],
+["Standard naming conventions dictate that non-boolean getter methods start with which prefix?",["fetch","get","read","show"],"B","Non-boolean getters conventionally begin with get."],
+["Standard naming conventions dictate that getter methods for boolean properties start with which prefix?",["get","has","is","check"],"C","Boolean getters conventionally begin with is."],
+["Standard naming conventions dictate that mutator methods start with which prefix?",["set","put","update","write"],"A","Mutator methods conventionally begin with set."],
+["What term describes a class whose instance state cannot be changed once constructed?",["Static class","Immutable class","Abstract class","Transient class"],"B","An immutable object's state cannot change after construction."],
+["To achieve immutability in a class design, which methods must be removed or omitted?",["Getter methods","Setter methods","Constructors","toString methods"],"B","Setters would allow an immutable object's state to change."],
+["In an immutable class, where are initial values assigned to fields during object instantiation?",["In setter methods","In the constructor","In static initializers","In main method"],"B","Immutable fields receive their initial values in the constructor."],
+["Which of the following is a primary benefit of encapsulation?",["Allows code reuse and restricts direct access","Eliminates need for memory management","Speeds up compilation","Removes class dependency"],"A","Encapsulation restricts direct access and supports maintainable class design."]
+];// Mathematics question bank.
 const mathQuestions = [
-  ["Which jQuery method is used to add one or more classes to the selected elements?",["setClass()","addClass()","appendClass()","toggleClass()"],"B","addClass() adds one or more classes."],
-  ["How are multiple class names separated when using the addClass() method?",["With commas","With semicolons","With whitespace","With plus signs"],"C","Multiple class names are separated by whitespace."],
-  ["What happens when toggleClass() is executed on an element that already has the specified class?",["The class is added again.","The class is removed.","An error is thrown.","Nothing changes."],"B","toggleClass() removes the class when it is already present."],
-  ["Which jQuery method can be used to both get and set CSS property values?",["css()","style()","attr()","html()"],"A","css() gets and sets CSS properties."],
-  ["When setting multiple CSS properties with css(), which syntax format is used?",["XML syntax","JSON syntax","YAML syntax","HTML attribute syntax"],"B","Multiple CSS properties are supplied as an object in JSON-like syntax."],
-  ["Property-value pairs in the css() method are enclosed in which type of brackets?",["Square brackets []","Angle brackets <>","Parentheses ()","Curly braces {}"],"D","CSS property-value pairs are enclosed in curly braces."],
-  ["Which method returns the width of an element excluding padding, borders, and margins?",["innerWidth()","outerWidth()","width()","css(\"width\")"],"C","width() returns content width."],
-  ["The innerWidth() method includes which of the following element dimensions?",["Content width only","Content width and padding ONLY","Content width, padding, and border","Content width, padding, border, and margin"],"B","innerWidth() includes content and padding."],
-  ["Which dimension method calculates size including both padding and borders?",["height()","innerHeight()","outerHeight()","marginHeight()"],"C","outerHeight() includes padding and borders."],
-  ["Numerical dimension values in jQuery are converted and treated as equivalent measurements in what unit?",["Inches","Percentages","Em units","Pixels"],"D","jQuery treats numerical dimensions as pixels."],
-  ["DOM traversal in jQuery is designed to simplify processes compared to native JavaScript by requiring:",["More code","Less code","Complex loops","Raw XML parsing"],"B","jQuery traversal generally requires less code."],
-  ["Which jQuery traversal method returns the direct parent element of the selected element?",["parents()","parent()","children()","ancestor()"],"B","parent() returns the direct parent."],
-  ["What does the parents() method return?",["Only the top-most root element","The direct parent element","All ancestor elements of the selected element","All child elements of the parent"],"C","parents() returns all ancestors."],
-  ["Which method returns all direct children of the selected element?",["children()","siblings()","descendants()","find()"],"A","children() returns direct children."],
-  ["To select all sibling elements of a target element, which method is used?",["next()","prev()","siblings()","eq()"],"C","siblings() selects sibling elements."],
-  ["What is returned by the next() method?",["The next child element","The next sibling element","All ancestor elements","The direct parent element"],"B","next() returns the next sibling."],
-  ["Which method retrieves previous sibling elements in the DOM hierarchy?",["prev() / prevAll()","parent()","children()","back()"],"A","prev() and prevAll() retrieve previous siblings."],
-  ["The eq() method selects an element based on its:",["ID name","Class name","Specific index number","Tag name"],"C","eq() selects by index."],
-  ["What is the index number of the first element in a set selected by eq()?",["-1","0","1","2"],"B","jQuery indexes start at zero."],
-  ["Which method is used to completely remove elements from the DOM?",["empty()","remove()","detachClass()","hide()"],"B","remove() deletes selected elements."],
-  ["What does the empty() method remove from a selected element?",["The selected element itself","Only the attributes of the element","Any child elements of the selected element","The element's CSS classes"],"C","empty() removes child elements."],
-  ["When empty() is used on a parent element, what happens to the parent element itself?",["It is completely deleted.","It is retained, but its children are removed.","It is converted into a span tag.","It gets hidden using display: none."],"B","The parent remains while its children are removed."],
-  ["Which event fires when an element is clicked twice in rapid succession?",["click()","dblclick()","mouseenter()","hover()"],"B","dblclick() handles double-clicks."],
-  ["Which event handler occurs when the mouse pointer moves over (enters) an element's area?",["mouseleave()","mouseout()","mouseenter()","focus()"],"C","mouseenter() fires when the pointer enters."],
-  ["What event is triggered when the mouse pointer leaves a selected element?",["mouseenter()","mouseleave()","blur()","change()"],"B","mouseleave() fires when the pointer leaves."],
-  ["Which keyboard event triggers at the moment a key is pressed down?",["keyup()","keypress()","keydown()","input()"],"C","keydown() fires when a key is pressed."],
-  ["Which event handler function is triggered when a key is released?",["keydown()","keyup()","blur()","change()"],"B","keyup() fires when a key is released."],
-  ["What event handler is used to run code when a form is submitted?",["submit()","send()","post()","change()"],"A","submit() handles form submission."],
-  ["The change() event occurs when:",["An element loses focus","The value of an element has been changed","The mouse pointer moves","The window is resized"],"B","change() fires when an element's value changes."],
-  ["Which event handler is executed when an element receives focus?",["blur()","focus()","ready()","active()"],"B","focus() fires when an element receives focus."],
-  ["The blur() event handler occurs when an element:",["Gets focus","Loses focus","Is hidden","Is clicked"],"B","blur() fires when an element loses focus."],
-  ["Which event handler is executed as soon as the DOM hierarchy has been fully loaded?",["load()","ready()","resize()","scroll()"],"B","ready() runs after the DOM is ready."],
-  ["Which event fires when the user resizes the browser window?",["scroll()","resize()","change()","scale()"],"B","resize() fires when the window changes size."],
-  ["What method offers an alternative technique to attach event handlers to selected elements?",["bind()","attach()","on()","listen()"],"C","on() attaches event handlers."],
-  ["When using the on() method, what is passed as the first argument?",["The event handling function","The actual event listening method (e.g., \"click\")","The CSS selector","The target DOM element"],"B","The first argument is the event type."],
-  ["Which method is used to detach or remove an event handler attached with on()?",["off()","unbind()","detach()","remove()"],"A","off() removes handlers attached with on()."],
-  ["Event handling functions receive an object that contains event-related properties and methods. What is this object called?",["DOM Object","Action Object","Event Object","Response Object"],"C","The object is called the Event Object."],
-  ["Which properties of the Event Object return the mouse X & Y coordinates at the time of the event?",["clientX and clientY","pageX and pageY","screenX and screenY","posX and posY"],"B","pageX and pageY provide page coordinates."],
-  ["The type property of an Event Object returns:",["The HTML tag name","The data type of the target element","The name/type of the event (e.g., \"click\")","The class name of the element"],"C","type returns the event name."],
-  ["In keyboard events, which property returns the key or button that was pressed?",["key","code","which","keyCode"],"C","which returns the key/button value in the referenced jQuery event API."],
-  ["Which property returns any custom data passed in when the event was bound?",["target","data","value","info"],"B","data contains custom event data."],
-  ["The target property of an Event Object returns:",["The DOM element that initiated the event","The parent element of the active element","The event listener function","The return value of the function"],"A","target identifies the element that initiated the event."],
-  ["Which method prevents default actions (such as a link following a URL)?",["stopPropagation()","cancelBubble()","preventDefault()","stop()"],"C","preventDefault() cancels the browser's default action."],
-  ["What does stopPropagation() do?",["Stops the script execution completely","Prevents event bubbling to ancestor elements","Prevents forms from submitting","Pauses CSS animations"],"B","stopPropagation() prevents bubbling."],
-  ["Which jQuery method allows executing event handling functions manually without physical user interaction?",["fire()","trigger()","dispatch()","emit()"],"B","trigger() manually fires an event."],
-  ["What is a limitation of the trigger() method?",["It cannot handle custom events.","It cannot mimic native browser events like clicking anchor tags.","It works only on form elements.","It requires an internet connection."],"B","trigger() cannot fully mimic native browser actions such as anchor clicks."],
-  ["Which method is used to hide selected elements?",["show()","hide()","toggle()","remove()"],"B","hide() hides selected elements."],
-  ["Which method alternates between revealing and hiding elements?",["slide()","fade()","toggle()","switch()"],"C","toggle() alternates visibility."],
-  ["What does the fadeIn() method do?",["Makes an element completely invisible instantly","Gradually fades an element until it is visible","Fades an element up to a fixed 50% opacity","Slides the element down"],"B","fadeIn() gradually makes an element visible."],
-  ["Which fading method accepts floating-point values between 0 and 1 to set custom opacity?",["fadeIn()","fadeOut()","fadeToggle()","fadeTo()"],"D","fadeTo() accepts a target opacity."],
-  ["In fadeTo(), what floating-point value represents an opacity level of 60%?",["60","6.0","0.6","0.06"],"C","Sixty percent opacity is 0.6."],
-  ["Speed arguments in fading and sliding methods take numerical values measured in:",["Seconds","Milliseconds","Frames per second","Minutes"],"B","jQuery animation speeds are measured in milliseconds."],
-  ["Which sliding method creates an upward effect to hide an element?",["slideDown()","slideUp()","slideToggle()","slideOut()"],"B","slideUp() hides an element with an upward effect."],
-  ["What effect is produced by slideDown()?",["Downward sliding effect to show an element","Downward sliding effect to hide an element","Fading out effect","Horizontal expansion"],"A","slideDown() reveals an element by sliding it downward."],
-  ["Which method allows custom animation to set values or values relative to current values?",["animate()","css()","transform()","transition()"],"A","animate() creates custom animations."],
-  ["How are multiple CSS properties separated inside the animate() method's first parameter?",["Semicolons","Colons","Commas","Spaces"],"C","Properties in the object are separated by commas."],
-  ["Relative values in animate() can be specified using which operators?",["++ or --","+= or -=","== or !=","*= or /="],"B","Relative animation values use += or -=."],
-  ["According to the rules of animate(), CSS property names with multiple words must be written in:",["kebab-case","SNAKE_CASE","camelCase","PascalCase"],"C","Multiword property names use camelCase."],
-  ["When using animate(), how should the CSS property margin-right be formatted?",["margin-right","margin_right","marginRight","MarginRight"],"C","margin-right becomes marginRight in JavaScript."],
-  ["How does jQuery handle sequential calls to the animate() method on the same element?",["It executes them all simultaneously.","It cancels earlier animations.","It creates an internal queue and executes them sequentially.","It throws a syntax error."],"C","jQuery queues animations on the same element."]
+  ["What is the value of 12 + 8 × 3?",["36","60","28","24"],"B","Multiplication comes before addition, so 8 × 3 = 24 and 12 + 24 = 36."],
+  ["Find the remainder when 49 is divided by 6.",["1","3","4","5"],"C","49 ÷ 6 = 8 remainder 1."],
+  ["What is 25% of 240?",["40","50","60","80"],"C","25% of 240 is 0.25 × 240 = 60."],
+  ["Solve for x: 3x - 9 = 12.",["x = 3","x = 5","x = 7","x = 9"],"C","Add 9 to both sides: 3x = 21, then divide by 3."],
+  ["Which fraction is equivalent to 0.75?",["1/2","2/3","3/4","4/5"],"C","0.75 = 75/100 = 3/4."],
+  ["A triangle has angles 45°, 65°, and x°. What is x?",["60°","70°","80°","90°"],"B","The sum of triangle angles is 180°, so x = 180 - 45 - 65 = 70."],
+  ["What is the product of 7 and 9?",["56","63","72","81"],"B","7 × 9 = 63."],
+  ["Which number is the greatest common factor of 24 and 36?",["6","8","12","18"],"C","12 is the greatest common factor of 24 and 36."],
+  ["If a = 5 and b = 2, what is a² - b²?",["17","21","29","31"],"C","25 - 4 = 21."],
+  ["What is the perimeter of a square with side length 6 cm?",["12 cm","18 cm","24 cm","36 cm"],"C","Perimeter = 4 × 6 = 24 cm."]
 ];
 
+// Escape question text before inserting it into the page.
 function escapeHTML(value){
   return String(value).replace(/[&<>"']/g,character=>(
     {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[character])
   );
 }
 
+// Identify the broad device category without collecting a unique device fingerprint.
+function detectDevice(){
+  const userAgent=navigator.userAgent||"";
+  if(/iPhone/i.test(userAgent)) return "iPhone";
+  if(/iPad/i.test(userAgent)||(/Macintosh/i.test(userAgent)&&navigator.maxTouchPoints>1)) return "iPad";
+  if(/Android/i.test(userAgent)) return "Android";
+  if(/Windows/i.test(userAgent)) return "Windows";
+  if(/Macintosh|Mac OS X/i.test(userAgent)) return "Mac";
+  if(/Linux/i.test(userAgent)) return "Linux";
+  return "Unknown";
+}
+
+const device=detectDevice();
+
+// Save a completed examination and return a user-facing status message.
+async function saveExamSubmission(submission){
+  if(SUPABASE_KEY==="******"){
+    const message="The examination was graded, but it was not saved because the Supabase anon key is not configured.";
+    console.error(message);
+    return message;
+  }
+  try{
+    const { error }=await supabaseClient
+      .from("exam_submissions")
+      .insert(submission);
+    if(error){
+      console.error("Could not save exam result:",error);
+      return `The examination was graded, but it could not be saved (${error.message}).`;
+    }
+    return "";
+  }catch(error){
+    console.error("Could not save exam result:",error);
+    return "The examination was graded, but it could not be saved because the database request failed.";
+  }
+}
+
+// Render BSIT 2101 questions and their answer choices.
 function renderMCQ(){
   const c=document.getElementById("mcqContainer");
   c.innerHTML=questions.map((q,i)=>{
     const n=i+1;
-    return `<div class="question">
+    return `<div class="question" data-question-index="${i}"${i===0?"":" hidden"}>
       <div class="qtext">${n}. ${escapeHTML(q[0])}</div>
       ${q[1].map((opt,j)=>{
         const letter=String.fromCharCode(65+j);
@@ -512,11 +537,12 @@ function renderMCQ(){
     </div>`;
   }).join("");
 }
+// Render Mathematics questions and their answer choices.
 function renderMathQuestions(){
   const c=document.getElementById("mathMcqContainer");
   c.innerHTML=mathQuestions.map((q,i)=>{
     const n=i+1;
-    return `<div class="question">
+    return `<div class="question" data-question-index="${i}"${i===0?"":" hidden"}>
       <div class="qtext">${n}. ${escapeHTML(q[0])}</div>
       ${q[1].map((opt,j)=>{
         const letter=String.fromCharCode(65+j);
@@ -525,18 +551,72 @@ function renderMathQuestions(){
     </div>`;
   }).join("");
 }
+// Randomize the BSIT 2101 question order for each examination session.
 function shuffleQuestions(){
   for(let i=questions.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
     [questions[i],questions[j]]=[questions[j],questions[i]];
   }
 }
-function shuffleMathQuestions(){
-  for(let i=mathQuestions.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [mathQuestions[i],mathQuestions[j]]=[mathQuestions[j],mathQuestions[i]];
+// Track the active question and controls for each subject modal.
+const questionModalState={
+  ict:{modalId:"ictQuestionModal",containerId:"mcqContainer",progressId:"ictQuestionProgress",previousId:"ictPreviousQuestion",nextId:"ictNextQuestion",openId:"openIctQuestions",total:()=>questions.length,index:0},
+  math:{modalId:"mathQuestionModal",containerId:"mathMcqContainer",progressId:"mathQuestionProgress",previousId:"mathPreviousQuestion",nextId:"mathNextQuestion",openId:"openMathQuestions",total:()=>mathQuestions.length,index:0}
+};
+// Display the current question and update navigation controls.
+function updateQuestionModal(subject){
+  const state=questionModalState[subject];
+  const container=document.getElementById(state.containerId);
+  const questionElements=container.querySelectorAll(".question");
+  questionElements.forEach((question,index)=>{question.hidden=index!==state.index;});
+  document.getElementById(state.progressId).textContent=`Question ${state.index+1} of ${state.total()}`;
+  document.getElementById(state.previousId).disabled=state.index===0;
+  document.getElementById(state.nextId).textContent=state.index===state.total()-1?"Finish Questions":"Next";
+  const currentQuestion=questionElements[state.index];
+  if(currentQuestion){
+    const firstInput=currentQuestion.querySelector("input");
+    if(firstInput) firstInput.focus();
   }
 }
+// Open a subject's question modal.
+function openQuestionModal(subject){
+  const state=questionModalState[subject];
+  document.getElementById(state.modalId).classList.add("open");
+  document.body.style.overflow="hidden";
+  updateQuestionModal(subject);
+}
+// Close a subject's question modal and restore focus to its launcher.
+function closeQuestionModal(subject){
+  const state=questionModalState[subject];
+  document.getElementById(state.modalId).classList.remove("open");
+  document.body.style.overflow="";
+  document.getElementById(state.openId).focus();
+}
+// Move forward or backward through questions after validating forward navigation.
+function moveQuestion(subject,direction){
+  const state=questionModalState[subject];
+  const currentName=subject==="ict"?`q${state.index+1}`:`m${state.index+1}`;
+  if(direction>0&&!document.querySelector(`input[name="${currentName}"]:checked`)){
+    alert("Please select an answer before continuing.");
+    return;
+  }
+  const nextIndex=state.index+direction;
+  if(nextIndex<0||nextIndex>=state.total()){
+    closeQuestionModal(subject);
+    return;
+  }
+  state.index=nextIndex;
+  updateQuestionModal(subject);
+}
+Object.entries(questionModalState).forEach(([subject,state])=>{
+  document.getElementById(state.openId).addEventListener("click",()=>openQuestionModal(subject));
+  document.getElementById(state.previousId).addEventListener("click",()=>moveQuestion(subject,-1));
+  document.getElementById(state.nextId).addEventListener("click",()=>moveQuestion(subject,1));
+});
+document.querySelectorAll("[data-close-question-modal]").forEach(button=>{
+  button.addEventListener("click",()=>closeQuestionModal(button.dataset.closeQuestionModal==="ictQuestionModal"?"ict":"math"));
+});
+// Grade the BSIT 2101 examination and save the result to Supabase.
 async function grade(){
   document.getElementById("submissionLoading").style.display="grid";
   document.body.style.overflow="hidden";
@@ -555,27 +635,14 @@ async function grade(){
     }
   });
   const points=correct*2;
-  const totalPoints=questions.length*2;
-  let saveMessage="";
-  if(SUPABASE_KEY==="******"){
-    saveMessage="The examination was graded, but it could not be saved because the Supabase API key is not configured.";
-    console.error(saveMessage);
-  }else{
-    const { error } = await supabaseClient
-      .from("exam_submissions")
-      .insert({
-        student_name: document.getElementById("name").value.trim(),
-        section: document.getElementById("section").value.trim(),
-        exam_date: document.getElementById("date").value,
-        mcq_score: points,
-        essay_answered: 0
-      });
-
-    if (error) {
-      saveMessage="The examination was graded, but it could not be saved. Please contact your instructor.";
-      console.error("Could not save exam result:", error);
-    }
-  }
+  const saveMessage=await saveExamSubmission({
+    student_name: document.getElementById("name").value.trim(),
+    section: document.getElementById("section").value.trim(),
+    exam_date: document.getElementById("date").value,
+    mcq_score: points,
+    essay_answered: 0,
+    device
+  });
 if (!saveMessage) {
   const submitButton=document.getElementById("submitButton");
   submitButton.type="button";
@@ -585,7 +652,7 @@ if (!saveMessage) {
   document.getElementById("submissionLoading").style.display="none";
   document.getElementById("result").style.display="block";
   document.getElementById("resultText").innerHTML=
-    `<div class="score">${points} / ${totalPoints}</div>
+    `<div class="score">${points} / ${questions.length*2}</div>
      <p><strong>Multiple-choice:</strong> ${correct} correct out of ${questions.length}. ${answered} item(s) answered.</p>
      <p class="success">Your score is based on ${questions.length} multiple-choice items worth 2 points each.</p>
      ${saveMessage?`<p class="warning"><strong>Save status:</strong> ${saveMessage}</p>`:"<p class=\"success\"><strong>Save status:</strong> Result saved successfully.</p>"}`;
@@ -594,6 +661,7 @@ if (!saveMessage) {
     : `<div class="correct">Excellent! All answered items are correct.</div>`;
   document.querySelector(".result-close").focus();
 }
+// Grade the Mathematics examination.
 async function gradeMath(){
   let correct=0, answered=0, review=[];
   const form=document.getElementById("mathExamForm");
@@ -611,78 +679,62 @@ async function gradeMath(){
     }
   });
   const points=correct*2;
-  const submissionLoading=document.getElementById("submissionLoading");
-  submissionLoading.style.display="grid";
-  document.body.style.overflow="hidden";
-  let saveMessage="";
-  try{
-    if(SUPABASE_KEY==="******"){
-      saveMessage="The examination was graded, but it could not be saved because the Supabase API key is not configured.";
-      console.error(saveMessage);
-    }else{
-      const { error } = await supabaseClient
-        .from("exam_submissions")
-        .insert({
-          student_name: document.getElementById("mathName").value.trim(),
-          section: document.getElementById("mathSection").value.trim(),
-          exam_date: document.getElementById("mathDate").value,
-          mcq_score: points,
-          essay_answered: 0
-        });
-
-      if(error){
-        saveMessage="The examination was graded, but it could not be saved. Please contact your instructor.";
-        console.error("Could not save JavaScript exam result:",error);
-      }
-    }
-  }finally{
-    submissionLoading.style.display="none";
-    document.body.style.overflow="";
-  }
-  if(!saveMessage){
-    const submitButton=document.getElementById("mathSubmitButton");
-    submitButton.type="button";
-    submitButton.textContent="Retake Examination";
-    submitButton.onclick=retakeExam;
-  }
+  const saveMessage=await saveExamSubmission({
+    student_name: document.getElementById("mathName").value.trim(),
+    section: document.getElementById("mathSection").value.trim(),
+    exam_date: document.getElementById("mathDate").value,
+    mcq_score: points,
+    essay_answered: 0,
+    device
+  });
   const result=document.getElementById("mathResult");
   const resultText=document.getElementById("mathResultText");
   const reviewBox=document.getElementById("mathReview");
   result.style.display="block";
-  resultText.innerHTML=`<div class="score">${points} / 120</div>
-    <p><strong>Multiple-choice:</strong> ${correct} correct out of 60. ${answered} item(s) answered.</p>
-    <p class="success">Your score is based on 60 multiple-choice items worth 2 points each.</p>`;
-  resultText.innerHTML+=saveMessage
-    ? `<p class="warning"><strong>Save status:</strong> ${saveMessage}</p>`
-    : `<p class="success"><strong>Save status:</strong> Result saved successfully.</p>`;
+  resultText.innerHTML=`<div class="score">${points} / 20</div>
+    <p><strong>Multiple-choice:</strong> ${correct} correct out of 10. ${answered} item(s) answered.</p>
+    <p class="success">Your score is based on 10 multiple-choice items worth 2 points each.</p>`;
+  if(saveMessage){
+    resultText.innerHTML+=`<p class="warning"><strong>Save status:</strong> ${escapeHTML(saveMessage)}</p>`;
+  }else{
+    resultText.innerHTML+=`<p class="success"><strong>Save status:</strong> Result saved successfully.</p>`;
+  }
   reviewBox.innerHTML = review.length
     ? `<h3>Items to Review</h3>${review.map(x=>`<div class="wrong">Item ${x.n}: your answer <strong>${x.selected}</strong> • correct answer <strong>${x.correct}</strong><br>${mathQuestions[x.n-1][3]}</div>`).join("")}`
     : `<div class="correct">Excellent! All answered items are correct.</div>`;
   result.querySelector(".result-close").focus();
 }
+// Connect form submissions to their grading functions.
 document.getElementById("examForm").addEventListener("submit",e=>{e.preventDefault();grade();});
 document.getElementById("mathExamForm").addEventListener("submit",e=>{e.preventDefault();gradeMath();});
+// Close a result dialog.
 function closeResult(targetId="result"){
   document.getElementById(targetId).style.display="none";
   document.body.style.overflow="";
 }
+// Reset BSIT 2101 answers and question position.
 function resetExam(){
   if(confirm("Reset all answers?")){
     document.getElementById("examForm").reset();
+    questionModalState.ict.index=0;
     closeResult();
     window.scrollTo({top:0,behavior:"smooth"});
   }
 }
+// Reset Mathematics answers and question position.
 function resetMathExam(){
   if(confirm("Reset all answers?")){
     document.getElementById("mathExamForm").reset();
+    questionModalState.math.index=0;
     closeResult("mathResult");
     window.scrollTo({top:0,behavior:"smooth"});
   }
 }
+// Reload the page for a new examination attempt.
 function retakeExam(){
   window.location.reload();
 }
+// Switch between subject panels.
 function switchTab(tabName){
   const tabs=document.querySelectorAll(".tab-button");
   const panels=document.querySelectorAll(".tab-panel");
@@ -700,9 +752,9 @@ function switchTab(tabName){
 document.querySelectorAll(".tab-button").forEach(button=>{
   button.addEventListener("click",()=>switchTab(button.dataset.tab));
 });
+// Prepare question data and reveal the welcome dialog.
 function prepareExam(){
   shuffleQuestions();
-  shuffleMathQuestions();
   renderMCQ();
   renderMathQuestions();
   document.getElementById("date").valueAsDate=new Date();
@@ -717,31 +769,43 @@ function prepareExam(){
     startButton.focus();
   },800);
 }
+// Request fullscreen where the device supports and requires it.
 async function enterFullscreen(){
+  if(isIPhone()){
+    return;
+  }
   if(!document.fullscreenElement){
     await document.documentElement.requestFullscreen();
   }
 }
+// iPhone browsers commonly do not support the required fullscreen API.
+function isIPhone(){
+  return /iPhone|iPod/i.test(navigator.userAgent);
+}
 let examStarted=false;
 let pageLeaveRefreshStarted=false;
+// Restart the page after the user leaves the examination.
 function refreshAfterPageLeave(){
   if(examStarted&&!pageLeaveRefreshStarted){
     pageLeaveRefreshStarted=true;
     window.location.reload();
   }
 }
+// Pause the interface when the examination page loses focus.
 function pauseForPageLeave(){
   if(examStarted&&(document.hidden||!document.hasFocus())){
     document.getElementById("pageLeaveScreen").style.display="grid";
     document.body.style.overflow="hidden";
   }
 }
+// Resume the interface after the user returns to the examination.
 function resumeAfterPageReturn(){
-  if(examStarted&&document.visibilityState==="visible"&&document.hasFocus()&&document.fullscreenElement){
+  if(examStarted&&document.visibilityState==="visible"&&document.hasFocus()&&(isIPhone()||document.fullscreenElement)){
     document.getElementById("pageLeaveScreen").style.display="none";
     document.body.style.overflow="";
   }
 }
+// Start the examination after fullscreen requirements are satisfied.
 async function startExam(){
   try{
     await enterFullscreen();
@@ -756,11 +820,13 @@ async function startExam(){
   examStarted=true;
   document.getElementById("name").focus();
 }
+// Register start, fullscreen, focus, and visibility event handlers.
 document.getElementById("startExam").addEventListener("click",startExam);
 document.getElementById("returnFullscreen").addEventListener("click",startExam);
 document.getElementById("returnPage").addEventListener("click",startExam);
+document.addEventListener("contextmenu",event=>event.preventDefault());
 document.addEventListener("fullscreenchange",()=>{
-  if(examStarted&&!document.fullscreenElement){
+  if(examStarted&&!isIPhone()&&!document.fullscreenElement){
     document.getElementById("fullscreenScreen").style.display="grid";
     document.body.style.overflow="hidden";
     document.getElementById("returnFullscreen").focus();
