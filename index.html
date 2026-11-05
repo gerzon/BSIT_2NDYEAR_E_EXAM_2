@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSIT 2101 Online Examination</title>
+<title>BSIT 2101 Online Examination - Abstract Classes and Interfaces</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // Supabase connection settings used to save completed examination results.
@@ -245,7 +245,7 @@ const supabaseClient = window.supabase.createClient(
   <div class="header-inner">
     <div class="header-row"><div class="brand">STI COLLEGE</div><a class="dashboard-link" href="admin_dashboard.html">Admin Dashboard</a></div>
     <h1>BSIT 2101 Online Examination</h1>
-    <p class="subtitle">Java OOP: Constructors, Encapsulation and Inheritance</p>
+    <p class="subtitle">Java OOP: Abstract Classes and Interfaces</p>
   </div>
 </header>
 
@@ -273,16 +273,16 @@ const supabaseClient = window.supabase.createClient(
       <section class="card">
         <div class="section-title">Instructions</div>
         <div class="instructions">
-          <strong>Multiple Choice:</strong> Choose the best answer. 50 items × 2 points = 100 points.<br>
-          <strong>Total:</strong> 100 points.
+          <strong>Multiple Choice:</strong> Choose the best answer. 30 items × 2 points = 60 points.<br>
+          <strong>Total:</strong> 60 points.
           <table class="grading-scale" aria-label="Personal grading scale">
             <thead>
               <tr><th>Score</th><th>Recording</th></tr>
             </thead>
             <tbody>
-              <tr><td>90 - 100</td><td>Will be recorded as 100 points</td></tr>
-              <tr><td>75 - 89</td><td>Actual score</td></tr>
-              <tr><td>74 &amp; below</td><td>Will be recorded as zero points</td></tr>
+              <tr><td>54 - 60</td><td>Will be recorded as 100 points</td></tr>
+              <tr><td>45 - 53</td><td>Actual score</td></tr>
+              <tr><td>44 &amp; below</td><td>Will be recorded as zero points</td></tr>
             </tbody>
           </table>
         </div>
@@ -290,7 +290,7 @@ const supabaseClient = window.supabase.createClient(
 
       <!-- BSIT 2101 question launcher. Individual questions render in the modal below. -->
       <section class="card">
-        <div class="section-title">Multiple Choice <span class="points">(50 items × 2 points = 100 points)</span></div>
+        <div class="section-title">Multiple Choice <span class="points">(30 items × 2 points = 60 points)</span></div>
         <div class="question-launch">
           <p>Answer each question in the examination window.</p>
           <button id="openIctQuestions" class="open-questions" type="button">Open Questions</button>
@@ -414,58 +414,38 @@ const supabaseClient = window.supabase.createClient(
 <footer>BSIT 2101 Online Examination - Java OOP</footer>
 
 <script>
-// BSIT 2101 question bank: Java OOP constructors, encapsulation and inheritance.
+// BSIT 2101 question bank: Java OOP abstract classes and interfaces.
 const questions = [
-["What fundamental OOP concept allows a class to acquire attributes and behaviors from another class?",["Encapsulation","Polymorphism","Inheritance","Abstraction"],"C","Inheritance allows a class to acquire attributes and behaviors from another class."],
-["Which term refers to a class that is derived from another class?",["Superclass","Subclass","Child class","Base class"],"B","A class derived from another class is a subclass."],
-["What is another commonly used term for a superclass?",["Derived class","Base class","Extended class","Parent class"],"D","A superclass is also called a parent class."],
-["Which keyword is used in Java to implement inheritance between classes?",["inherits","implements","extends","super"],"C","The extends keyword establishes class inheritance."],
-["What type of inheritance hierarchy does Java support for classes?",["Multiple inheritance","Single inheritance","Dual inheritance","Cyclic inheritance"],"B","A Java class can directly extend only one class."],
-["Which top-level Java class is the ultimate ancestor of all other classes?",["java.lang.Class","java.lang.Object","java.lang.System","java.lang.Root"],"B","java.lang.Object is the root class of Java's class hierarchy."],
-["Which class is the only class in Java that does NOT have any parent class?",["Object","String","Main","Class"],"A","Object is the root class and has no parent class."],
-["If a class declaration does not explicitly use the extends keyword, which class does it invisibly extend?",["java.lang.String","java.lang.Object","java.util.Base","None"],"B","Every class without an explicit superclass implicitly extends Object."],
-["What modifier is placed before a class declaration to prevent it from being extended?",["static","abstract","final","private"],"C","A final class cannot be extended."],
-["How does a subclass access a private field declared in its superclass directly?",["Using the super keyword","Using the this keyword","It cannot access it directly","By casting to the parent"],"C","Private superclass fields are not directly accessible in subclasses."],
-["What condition allows a subclass to access a parent class without using an import statement?",["If both are public","If both are in the same package","If superclass is final","Import is always required"],"B","Classes in the same package can refer to one another without an import."],
-["In the statement public class Student extends Person, which class is the child class?",["Person","Student","Object","String"],"B","Student extends Person, so Student is the child class."],
-["Which of the following class declarations is illegal in Java?",["class A extends B","class A extends B, C","class A extends Object","final class A"],"B","Java does not support extending multiple classes."],
-["What structural element is primarily used during the creation of an object instance using the new keyword?",["Method","Constructor","Variable","Interface"],"B","A constructor initializes an object when it is created."],
-["What is the return type specified in a constructor declaration?",["void","Object","Same as class","No return type"],"D","Constructors do not declare a return type."],
-["What rule governs the naming of a constructor in Java?",["Must start with set","Must match the class name exactly","Must be init()","Can be any valid identifier"],"B","A constructor name must exactly match its class name."],
-["Are constructors inherited by child classes from parent classes?",["Yes, always","Yes, if public","No, never","Yes, if protected"],"C","Constructors are not inherited by child classes."],
-["What does Java automatically provide when no constructors are explicitly written in a class?",["Static constructor","Default no-argument constructor","Private constructor","Copy constructor"],"B","The compiler supplies a default no-argument constructor."],
-["What is contained in the parameter list of a compiler-generated default constructor?",["String args[]","Empty parameter list","Object self","int index"],"B","A default constructor has no parameters."],
-["What keyword resolves ambiguity when a constructor parameter has the exact same name as an instance variable?",["super","this","self","static"],"B","this distinguishes the instance variable from the parameter."],
-["What feature allows a class to have multiple constructors with different parameter signatures?",["Constructor Overriding","Constructor Overloading","Constructor Hiding","Constructor Shadowing"],"B","Multiple constructor signatures are constructor overloading."],
-["What term describes the process of one constructor calling another constructor within the same class?",["Method Overriding","Constructor Chaining","Super Invocation","Dynamic Binding"],"B","A constructor calling another constructor is constructor chaining."],
-["Which statement is used to call another constructor in the same class?",["this()","super()","new Self()","this.init()"],"A","this() invokes another constructor in the same class."],
-["What position must a this() or super() call occupy inside a constructor body?",["Any line","Last statement","First statement","Inside a try block"],"C","A constructor invocation must be the first statement."],
-["What statement is automatically inserted as the first line of a constructor if neither this() nor super() is declared?",["super();","this();","return;","System.exit(0);"],"A","Java implicitly inserts a call to super()."],
-["In an inheritance chain (Person -> Student -> FirstYear), in what sequence are constructors executed?",["FirstYear -> Student -> Person","Student -> Person -> FirstYear","Person -> Student -> FirstYear","Random order"],"C","Superclass constructors execute before subclass constructors."],
-["What happens if a parent class lacks a no-argument constructor, and the child constructor does not explicitly call super(...)?",["Code runs normally","Compilation error","Runtime exception","Null pointer warning"],"B","The compiler cannot insert a valid implicit super() call."],
-["Which keyword is used in a subclass to explicitly invoke a constructor of its parent class?",["super","parent","base","this"],"A","super invokes a superclass constructor."],
-["What occurs if super() is placed as the second line in a constructor definition?",["Executes second","Compilation error","Warning issued","Ignored by compiler"],"B","super() must be the first statement."],
-["Defining a new version of an existing superclass method in a subclass with the exact same signature is known as:",["Method Overloading","Method Overriding","Method Hiding","Method Shadowing"],"B","Replacing an inherited method with the same signature is overriding."],
-["Which requirement must be met by parameter lists during method overriding?",["Must be different","Must be identical","Child needs more params","Parent needs more params"],"B","Overriding requires the same parameter list."],
-["How must the accessibility of an overriding method in a subclass compare to the method in the parent class?",["Must be more restrictive","Must be private","At least as accessible","Accessibility does not matter"],"C","An overriding method cannot reduce accessibility."],
-["If a superclass method has protected access, what access modifier(s) can the overriding child method use?",["Only private","Protected or public","Only package-private","Only protected"],"B","The child method may retain protected or increase access to public."],
-["Which keyword allows an overriding method in a subclass to access the parent's original method implementation?",["super","base","this","parent"],"A","super calls the superclass implementation."],
-["What is the return type requirement when overriding a method in a child class?",["Must be void","Must be identical (or covariant)","Must be int","Can be any type"],"B","The return type must match or be covariant."],
-["What error occurs if a child class defines public Student() { System.out.println(\"A\"); super(); }?",["No error","Constructor call must be first","Invalid method name","Stack Overflow"],"B","A super() call must appear before any other constructor statement."],
-["If class Person has only public Person(String n), what statement MUST appear in public Student()?",["super();","super(\"someName\");","this();","Person();"],"B","The child must explicitly call the available superclass constructor."],
-["Can a subclass override a method that is marked with the final modifier in the superclass?",["Yes, always","No, final methods cannot be overridden","Yes, if public","Yes, using super"],"B","Final methods cannot be overridden."],
-["What core OOP principle describes an object's ability to hide its internal data and implementation details?",["Encapsulation","Polymorphism","Inheritance","Abstraction"],"A","Encapsulation bundles data and operations while restricting direct access."],
-["In standard Java encapsulation practices, how should instance variables (fields) be declared?",["public","protected","private","static"],"C","Private fields enforce controlled access through methods."],
-["What type of method is used to retrieve data from a private instance variable?",["Mutator method","Accessor method","Constructor","Destructor"],"B","An accessor reads a field value."],
-["What is another commonly used term for an accessor method?",["Setter","Getter","Builder","Modifier"],"B","An accessor is commonly called a getter."],
-["What type of method is used to modify or change the data stored in a private instance variable?",["Accessor method","Mutator method","Static method","Getter method"],"B","A mutator changes a field value."],
-["Standard naming conventions dictate that non-boolean getter methods start with which prefix?",["fetch","get","read","show"],"B","Non-boolean getters conventionally begin with get."],
-["Standard naming conventions dictate that getter methods for boolean properties start with which prefix?",["get","has","is","check"],"C","Boolean getters conventionally begin with is."],
-["Standard naming conventions dictate that mutator methods start with which prefix?",["set","put","update","write"],"A","Mutator methods conventionally begin with set."],
-["What term describes a class whose instance state cannot be changed once constructed?",["Static class","Immutable class","Abstract class","Transient class"],"B","An immutable object's state cannot change after construction."],
-["To achieve immutability in a class design, which methods must be removed or omitted?",["Getter methods","Setter methods","Constructors","toString methods"],"B","Setters would allow an immutable object's state to change."],
-["In an immutable class, where are initial values assigned to fields during object instantiation?",["In setter methods","In the constructor","In static initializers","In main method"],"B","Immutable fields receive their initial values in the constructor."],
-["Which of the following is a primary benefit of encapsulation?",["Allows code reuse and restricts direct access","Eliminates need for memory management","Speeds up compilation","Removes class dependency"],"A","Encapsulation restricts direct access and supports maintainable class design."]
+["A class declares abstract void move();. What does this declaration require?",["The method must contain a body in the same class","A concrete subclass must provide an implementation unless it remains abstract","Every object must call move() exactly once","The method becomes static automatically"],"B","An abstract method has no implementation, so a concrete subclass must implement it."],
+["Which declaration correctly defines an abstract class named Shape?",["public final abstract class Shape { }","public class abstract Shape { }","public abstract class Shape { }","abstract public final class Shape { }"],"C","Use the abstract modifier in a declaration such as public abstract class Shape."],
+["What happens when code attempts Animal a = new Animal(); and Animal is abstract?",["It creates an object with empty abstract methods","It compiles only if Animal has a constructor","It does not compile because an abstract class cannot be instantiated directly","It compiles but throws an exception at runtime"],"C","An abstract class cannot be instantiated directly."],
+["Which statement about an abstract class is true?",["It may contain both abstract and concrete methods","It may contain only abstract methods","It cannot declare instance variables","It must have at least one abstract method"],"A","An abstract class can combine implemented methods and abstract methods."],
+["Why can a class not be both final and abstract?",["A final class cannot contain methods","An abstract class must be extended, but a final class cannot be extended","A final class must have a private constructor","Abstract classes cannot have modifiers"],"B","Abstract classes are intended to be extended, while final prevents extension."],
+["Consider: abstract class Animal { abstract void eat(); } class Cat extends Animal { }. Why does this fail to compile?",["Cat must declare a constructor","Cat must implement eat() or be declared abstract","Animal cannot declare methods","The method must be static"],"B","A non-abstract subclass must implement inherited abstract methods."],
+["An abstract class Pet extends Animal, which is abstract. Pet does not implement Animal's abstract method. What is required?",["Pet must become final","Pet must implement every inherited method immediately","Pet must be declared abstract","Pet cannot extend Animal"],"C","A subclass that leaves inherited abstract methods unimplemented must remain abstract."],
+["Which method declaration is a valid abstract method in an abstract class?",["private abstract void draw();","final abstract void draw();","abstract void draw();","abstract static void draw();"],"C","An abstract method can be declared without a body and must be overridable."],
+["A subclass overrides a public abstract method from its parent. Which access level is allowed for the overriding method?",["private only","protected or public","Package-private only","It must remain public"],"D","An overriding method cannot reduce the visibility of a public parent method."],
+["A method in a concrete subclass has the same name and parameters as an abstract parent method but returns an incompatible type. What is the result?",["It is a valid overload","It is a valid override because names match","It does not correctly override the abstract method and compilation fails","The parent method is ignored"],"C","An overriding method must have the same or a compatible covariant return type."],
+["What is the main purpose of an abstract class in a design such as Animal with abstract makeSound()?",["To prevent subclasses from having methods","To define a common parent contract while leaving some behavior to subclasses","To make all methods static","To allow direct construction of Animal"],"B","An abstract class can define shared structure and leave selected behavior to subclasses."],
+["Which class is required to implement inherited abstract methods?",["Every abstract class, immediately","The first concrete subclass in the inheritance chain","Only the original parent class","Only classes with a main method"],"B","The first concrete subclass must implement all inherited abstract methods."],
+["What does abstract void draw(); indicate?",["A method with an empty body","A method that must be private","A method declaration without an implementation body","A constructor named draw"],"C","An abstract method is declared without a method body."],
+["Which statement best describes an interface?",["A class that can be instantiated directly","A type that defines a contract which classes can implement","A special constructor","A class that can extend multiple classes"],"B","An interface defines a contract that implementing classes agree to fulfill."],
+["Given interface Alarm { void ring(); }, how is ring() treated by default?",["private and abstract","public and abstract","protected and concrete","static and final"],"B","An interface method declared without a body is implicitly public and abstract."],
+["Which declaration correctly defines an interface?",["public class Printable { }","public abstract class Printable { }","public interface Printable { }","public final interface Printable { }"],"C","The interface keyword declares an interface."],
+["What is the correct keyword for a class to use an interface?",["extends","implements","inherits","interface"],"B","A class uses implements to fulfill an interface contract."],
+["Which statement about interface constants is correct?",["They are private instance variables by default","They are implicitly public, static, and final","They must be initialized in a constructor","They can be changed by implementing classes"],"B","Interface fields are implicitly public, static, and final."],
+["Can a Java class implement more than one interface?",["No, only one interface is allowed","Yes, by listing interfaces separated by commas","Only if all interfaces have no methods","Only if the class is abstract"],"B","A class may implement multiple comma-separated interfaces."],
+["Which relationship is valid?",["class Dog implements AnimalClass","interface Child extends ParentInterface","interface Device implements Printable","class Printer extends PrintableInterface"],"B","An interface can extend another interface."],
+["An interface Combined extends interfaces Printable and Scannable. What must a concrete class implementing Combined do?",["Implement only methods declared directly in Combined","Implement all inherited abstract methods unless already implemented","Extend both interfaces as classes","Declare itself abstract in every case"],"B","A concrete implementation must fulfill inherited abstract interface methods."],
+["An abstract class implements an interface but leaves its abstract methods unimplemented. What is valid?",["It must be declared abstract","It must be final","It cannot have a constructor","It must remove the implements keyword"],"A","An abstract class may defer interface method implementations to its concrete subclasses."],
+["Two interfaces declare int getValue();. A class implements both. How many compatible implementations are needed?",["Two separate methods with different names","One method can satisfy both declarations","No implementation is needed","The class cannot implement both interfaces"],"B","One matching method implementation satisfies both identical declarations."],
+["Two interfaces declare int read(); and void read();. A class implements both. Why is this invalid?",["Methods in interfaces cannot be named read","The same signature cannot be implemented with conflicting return types","A class cannot implement two interfaces","Void methods must be static"],"B","The declarations have the same signature but incompatible return types."],
+["Which example demonstrates method overloading rather than overriding?",["Subclass defines print() matching parent's print()","Class defines print() and print(String text)","Subclass implements an interface method","Subclass changes a method's access from public to private"],"B","Overloading uses the same method name with different parameter lists."],
+["A class implements Switchable and Adjustable. What does this demonstrate?",["Multiple inheritance of classes","Multiple interface implementation","Abstract class instantiation","Interface constructor chaining"],"B","A Java class may implement multiple interfaces."],
+["What is the key difference between extends and implements in these examples?",["A class uses extends to inherit a class and implements to fulfill interface contracts","They are interchangeable in Java","Interfaces use implements to inherit other interfaces","A class uses implements to inherit another class"],"A","Classes extend a superclass and implement interfaces."],
+["Which statement about interface methods is accurate in modern Java?",["Interfaces can contain only abstract methods","Interfaces may contain abstract, default, and static methods","Interfaces may contain constructors","All interface methods are private by default"],"B","Modern interfaces support abstract, default, and static methods."],
+["A concrete class extends an abstract class that implements an interface but has not implemented its methods. What must the concrete class do?",["Nothing; interface methods are optional","Implement the inherited abstract methods or compilation fails","Declare all methods final","Change the interface into a class"],"B","A concrete subclass must implement all inherited abstract methods."],
+["Which design best uses an interface?",["A Payment interface defines processPayment(), and CashPayment and CardPayment implement it differently","A Payment interface stores each object's balance in a constructor","An interface is instantiated to process payment directly","A class extends two payment interfaces using extends"],"A","The interface specifies a shared operation while implementations provide their own behavior."]
 ];// Mathematics question bank.
 const mathQuestions = [
   ["What is the value of 12 + 8 × 3?",["36","60","28","24"],"B","Multiplication comes before addition, so 8 × 3 = 24 and 12 + 24 = 36."],
